@@ -16,7 +16,6 @@ namespace S7_GenerateSource
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Console.ReadLine();
             if (e.Args.Length > 0)
             {
                 StartupArgs = e.Args;
