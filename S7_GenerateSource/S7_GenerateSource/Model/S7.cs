@@ -1268,7 +1268,6 @@ namespace S7_GenerateSource
                             for (int j = 1; j <= ProjectS7.Programs[i].Next.Count; j++)
                             {
                                 SimaticCache.dicProgramsLogPath[i].dicBlocksLogPath.Add(j, ProjectS7.Programs[i].Next[j].LogPath);
-                                Console.WriteLine("Adding [" + j + "]  " + ProjectS7.Programs[i].Next[j].LogPath);
                             }
                         }
                     }

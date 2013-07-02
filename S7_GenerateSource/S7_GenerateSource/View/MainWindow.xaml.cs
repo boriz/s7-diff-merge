@@ -24,7 +24,6 @@ namespace S7_GenerateSource
 
         public MainWindow()
         {
-            Console.ReadLine();
             InitializeComponent();
             VM = TryFindResource("VM") as S7_ViewModel;
             VM.InitFromCommandLineArguments(App.StartupArgs);

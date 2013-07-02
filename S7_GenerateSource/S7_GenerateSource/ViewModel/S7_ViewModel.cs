@@ -550,7 +550,6 @@ namespace S7_GenerateSource
             EventFire.LogEvent += new EventHandler<EventArgs<LogEvent>>(S7Model_LogEvent);
             dispatcher = Dispatcher.CurrentDispatcher;
 
-            Console.Read();
             if (ApplicationDeployment.IsNetworkDeployed)
             {
                 ApplicationDeployment ad = ApplicationDeployment.CurrentDeployment;
