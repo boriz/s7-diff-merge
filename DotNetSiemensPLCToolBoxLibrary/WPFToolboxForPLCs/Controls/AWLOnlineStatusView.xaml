@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="WPFToolboxForSiemensPLCs.Controls.AWLOnlineStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             Name="wndAWLOnlineStatusView"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" Name="myDataGrid" CanUserResizeRows="False" CanUserSortColumns="False"
+              AlternatingRowBackground="Gainsboro" AlternationCount="2" CanUserAddRows="False"
+              ItemsSource="{Binding DisplayNetwork.AWLCode}">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue"/>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="VKE" Width="Auto" IsReadOnly="True" Visibility="Visible">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6"  Text="{Binding  ActualBlockStatus.VKE}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="STA" Width="Auto" IsReadOnly="True" Visibility="Visible">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.STA}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>                               
+                <DataGridTemplateColumn Header="Akku 1" Width="Auto" IsReadOnly="True" Visibility="Visible" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Padding="0" Margin="0" Text="{Binding ActualBlockStatus.Akku1}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Akku 2" Width="Auto" IsReadOnly="True" Visibility="Visible">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding ActualBlockStatus.Akku2}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="DB" Width="Auto" IsReadOnly="True" Visibility="Visible">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.DB}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="DI" Width="Auto" IsReadOnly="True" Visibility="Visible">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.DI}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="AR1" Width="Auto" IsReadOnly="True" Visibility="Collapsed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.AR1}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="AR2" Width="Auto" IsReadOnly="True" Visibility="Collapsed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.AR2}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="STW" Width="Auto" IsReadOnly="True" Visibility="Collapsed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.STW}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="IN-Para" Width="Auto" IsReadOnly="True" Visibility="Collapsed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.INPar}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="OUT-Para" Width="Auto" IsReadOnly="True" Visibility="Collapsed">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="12.6" Text="{Binding  ActualBlockStatus.OUTPar}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

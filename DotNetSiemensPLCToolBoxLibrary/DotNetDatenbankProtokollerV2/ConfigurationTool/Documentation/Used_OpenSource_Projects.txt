@@ -1,0 +1,48 @@
+﻿Versionen noch angeben!
+
+# = noch nicht benutzt/implementiert (Lizenzfragen??)
+
+Webserver:
+http://msdn.microsoft.com/en-us/library/dd767375(v=vs.90).aspx
+alternative: http://www.codeproject.com/Articles/11342/MiniHttpd-an-HTTP-web-server-library
+
+Serializer: (with Reference support!)
+http://sharpserializer.codeplex.com/
+
+Propertygrid and more...:
+http://wpftoolkit.codeplex.com (Ms-PL)
+
+For CSV Parsing: (3.7.2)
+http://www.codeproject.com/KB/database/CsvReader.aspx (MIT)
+
+For Excel File writing: (2011-04-14) (xls)
+http://code.google.com/p/excellibrary/ (LGPL) //Has a Bug in Excel 2010 with to small files (#60)
+
+For Excel File writing: (xls,xlsx)
+#http://epplus.codeplex.com/ (GPL)
+#http://simpleooxml.codeplex.com/ 
+#http://www.codeproject.com/KB/office/excelxmllibrary.aspx (CPOL)
+#http://www.chrislaforetsoftware.com/products.html (LGPL)
+#http://excelpackage.codeplex.com/
+#http://code.google.com/p/npoi/
+
+For better Serialization:
+http://sharpserializer.codeplex.com/
+
+For Communication:
+http://libnodave.sourceforge.net/ (LGPL)
+
+For Communication and Step7 File Access
+http://siemensplctoolboxlib.codeplex.com/ (LGPL)
+
+For postgres: (2.0.11.91)
+http://npgsql.projects.postgresql.org/ (Completely Open)
+
+For sqlite: (1.0.66.0) 
+http://sqlite.phxsoftware.com/ (100% free)
+
+For mysql: (6.3.6)
+#http://www.mysql.de/downloads/connector/net/
+
+For Firebird: (2.6.0.0)
+http://prdownloads.sourceforge.net/firebird/FirebirdClient-2.0.1.exe?download (LGPL)

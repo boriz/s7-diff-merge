@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="DMC.UI.ProgressPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ui="clr-namespace:DMC.UI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ui:ProgressPanel}}">
+        <Grid Background="Black" Opacity="0.25">
+            
+        </Grid>
+        <StackPanel VerticalAlignment="Center">
+            <ui:ProgressWheel RenderTransformOrigin="0.5, 0.5">
+                <ui:ProgressWheel.RenderTransform>
+                    <ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+                </ui:ProgressWheel.RenderTransform>
+            </ui:ProgressWheel>
+            <TextBlock Foreground="White" FontWeight="Bold" FontStyle="Normal" TextAlignment="Center" FontSize="32" Text="{Binding Message}" />
+        </StackPanel>
+        
+    </Grid>
+    
+</UserControl>

@@ -1,0 +1,19 @@
+﻿Eine Komentarzeile beginnt immer mit 6 Byte:
+
+Aufbau bei Netzwerkkommentar:
+byte 0   = 06 bei Netzwerk
+byte 1   = Start NW Kommentar [low/high Byte]
+byte 2   = Start NW Kommentar [low/high Byte]
+byte 3   = Ende NW Kommentar  [low/high Byte]
+byte 4   = Ende NW Kommentar  [low/high Byte]
+Byte 5   =  06 bei netzwerk
+Nach diesen Bytes kommt der NW Kommentar und die Beschreibung
+
+Aufbau bei Kommentarzeile
+byte 0   = Anzahl Zeichen Kommentar
+byte 1   = immer 00
+byte 2   = Anzahl der Zeilen vor diesem Kommentar, inklusive aktueller Zeile! [low/high Byte]
+byte 3   = Anzahl der Zeilen vor diesem Kommentar, inklusive aktueller Zeile! [low/high Byte]
+byte 4   = "20" bei leerer Zeile, "00" bei Leerer zeile mit Kommentar, "c0" bei AUF d.h. Auf nicht kombinieren, "80" bei Befehlen
+byte 5   = "28" bei zeilen mit Befehl, "00" bei Leerzeilen (mit oder ohne Kommentar)
+Nach diesen Bytes kommt der Kommentar, danach beginnts wieder von vorne!

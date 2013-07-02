@@ -1,0 +1,194 @@
+﻿<Window x:Class="S7_GenerateSource.SourceMerge"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:DMC.UI="clr-namespace:DMC.UI;assembly=DMC.UI"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:this="clr-namespace:S7_GenerateSource"
+        Height="642" 
+        Title="S7 Source Diff" 
+        Width="985" Icon="/S7_GenerateSource;component/DMC%20Siemens%20Icon.ico">
+    <Window.Resources>
+        <this:S7_ViewModel x:Key="VM"/>
+        <this:SeverityToImageConverter x:Key="SeverityToImageConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <this:SimilarityToColorConverter x:Key="SimilarityToColorConverter" />
+        <Style TargetType="TextBlock" x:Key="TextBlockHeader1Style">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="5,0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid >
+            <DockPanel>
+                <Grid DockPanel.Dock="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Grid.Column="1">
+                        <Grid DockPanel.Dock="Bottom" >
+                            <DockPanel Height="50" >
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" Content="Cancel" Command="{Binding CancelCmd}" Width="75" Margin="5" />
+                                    <Button Grid.Column="2" Content="Compile" Command="{Binding CompileCmd}" Width="75" Margin="5" />
+                                    <Button Grid.Column="4" Content="Close" Command="{Binding CloseCmd}" Width="75" Margin="5" />
+                                </Grid>
+                            </DockPanel>
+                        </Grid>
+
+                        <!--<GroupBox DockPanel.Dock="Right" Header="Messages">-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition Height="100"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+
+
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Name="groupBox"  DockPanel.Dock="Right" Header="Blocks">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="20" ></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <DataGrid  Grid.Row="0" DockPanel.Dock="Top"  BorderBrush="#DDDDDD"  Name="dataGrid" HorizontalGridLinesBrush="#DDDDDD" VerticalGridLinesBrush="#DDDDDD" IsReadOnly="True"  Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding AllBlocks}" Margin="5" this:Commands.DataGridDoubleClickCommand="{Binding DataGridDoubleClick}" SelectedItem="{Binding SelectedBlock}" SelectionMode="Single">
+                                        <DataGrid.Resources>
+                                            <Style TargetType="DataGridCell">
+                                                <Style.Triggers>
+                                                    <!-- Highlight selected rows -->
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter Property="Background" Value="Lavender" />
+                                                        <Setter Property="BorderBrush" Value="Lavender" />
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                                <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                                                <Setter Property="BorderBrush" Value="#DDDDDD"/>
+                                                <!-- Add some padding around the contents of a cell -->
+                                                <Setter Property="Padding" Value="4,3,4,3" />
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="DataGridCell">
+                                                            <Border Padding="{TemplateBinding Padding}" 
+                                Background="{TemplateBinding Background}">
+                                                                <ContentPresenter />
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+
+                                            </Style>
+                                            <Style x:Key="DataGridGapCell" TargetType="DataGridCell">
+                                                <Setter Property="Background" Value="{Binding ElementName=dataGrid, Path=Background}"/>
+                                                <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                                                <Setter Property="BorderBrush" Value="{Binding ElementName=dataGrid, Path=HorizontalGridLinesBrush}"/>
+                                            </Style>
+                                            <!-- Gap ColumnHeader Style -->
+                                            <Style x:Key="DataGridGapHeader" TargetType="DataGridColumnHeader">
+                                                <Setter Property="Background" Value="{Binding ElementName=dataGrid, Path=Background}"/>
+                                            </Style>
+                                        </DataGrid.Resources>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Width="1.3*" Header="Name" Binding="{Binding Value.LeftBlock.Name}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.LeftBlock.NameSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="1*" Header="Size" Binding="{Binding Value.LeftBlock.Size}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.LeftBlock.SizeSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="5*" Header="Symbol" Binding="{Binding Value.LeftBlock.SymbolicName}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.LeftBlock.SymbolicNameSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Key}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="4*" Header="Modified" Binding="{Binding Value.LeftBlock.Modified}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.LeftBlock.ModifiedSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="30" CellStyle="{StaticResource DataGridGapCell}" HeaderStyle="{StaticResource DataGridGapHeader}"/>
+                                            <DataGridTextColumn Width="1.3*" Header="Name" Binding="{Binding Value.RightBlock.Name}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.RightBlock.NameSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="1*" Header="Size" Binding="{Binding Value.RightBlock.Size}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.RightBlock.SizeSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="5*" Header="Symbol" Binding="{Binding Value.RightBlock.SymbolicName}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.RightBlock.SymbolicNameSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                        <Setter Property="ToolTip" Value="{Binding Key}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Width="4*" Header="Modified" Binding="{Binding Value.RightBlock.Modified}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Foreground" Value="{Binding Value.RightBlock.ModifiedSimilarity, Converter={StaticResource SimilarityToColorConverter}}"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </GroupBox>
+
+                            <ListView ItemsSource="{Binding LogModel}" Margin="5" Grid.ColumnSpan="3" Grid.Row="1">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0" Height="16" Width="16" Source="{Binding Path=LogSeverity, Converter={StaticResource SeverityToImageConverter}}" Margin="5,1" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Timestamp}" VerticalAlignment="Center" Margin="5,1" />
+                                            <TextBlock Grid.Column="2" Text="{Binding Message}" VerticalAlignment="Center" Margin="5,1" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+
+                        <!--</GroupBox>-->
+
+                    </DockPanel>
+                </Grid>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
