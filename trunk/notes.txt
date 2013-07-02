@@ -1,0 +1,10 @@
+Fix block timestamp issue
+	Parse block timestamp using Step 7?
+Speed-up block search
+	Multi-threading when updating blocks cache
+Speed-up initial load
+	Try to reload a particular block, not the whole project (won't work for orphan blocks)
+Complete HMI diff/merge
+symbol table diff/merge
+Merge both dirictions
+	Switch left/right projects
