@@ -80,6 +80,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\..\DMC_Library\NotifyPropertyChangedBase.cs">
+      <Link>DMC Library\NotifyPropertyChangedBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\ProgressWheel.xaml.cs">
+      <Link>DMC Library\ProgressWheel.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\ProgressWheelWedge.xaml.cs">
+      <Link>DMC Library\ProgressWheelWedge.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\RelayCommand.cs">
+      <Link>DMC Library\RelayCommand.cs</Link>
+    </Compile>
     <Compile Include="Model\Blocks.cs" />
     <Compile Include="Model\ExportTable.cs">
       <DependentUpon>ExportTable.xsd</DependentUpon>
@@ -96,6 +108,16 @@
       <DependentUpon>AlarmWorxEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ScrollSynchronizer.cs" />
+    <Page Include="..\..\DMC_Library\ProgressWheel.xaml">
+      <Link>DMC Library\ProgressWheel.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\DMC_Library\ProgressWheelWedge.xaml">
+      <Link>DMC Library\ProgressWheelWedge.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\AlarmWorxEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,14 +196,6 @@
     <Resource Include="Resources\DMC Siemens Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DMCLib\DMC.UI\DMC.UI.csproj">
-      <Project>{457EA463-48C1-4082-91DD-7F4E9A766720}</Project>
-      <Name>DMC.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DMCLib\DMCBase\DMCBase.csproj">
-      <Project>{202083FD-C96C-481C-B2BB-E0138D922933}</Project>
-      <Name>DMCBase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\DotNetSiemensPLCToolBoxLibrary\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary</Name>
@@ -209,6 +223,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
