@@ -103,6 +103,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\..\DMC_Library\EventArgs.cs">
+      <Link>DMC Library\EventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\ListBoxExtenders.cs">
+      <Link>DMC Library\ListBoxExtenders.cs</Link>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\NotifyPropertyChangedBase.cs">
+      <Link>DMC Library\NotifyPropertyChangedBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\ProgressWheel.xaml.cs">
+      <Link>DMC Library\ProgressWheel.xaml.cs</Link>
+      <DependentUpon>ProgressWheel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\ProgressWheelWedge.xaml.cs">
+      <Link>DMC Library\ProgressWheelWedge.xaml.cs</Link>
+      <DependentUpon>ProgressWheelWedge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\DMC_Library\RelayCommand.cs">
+      <Link>DMC Library\RelayCommand.cs</Link>
+    </Compile>
     <Compile Include="Model\BlockSource.cs" />
     <Compile Include="Model\S7_Merge.cs" />
     <Compile Include="SimaticCache.cs" />
@@ -114,6 +134,16 @@
     <Compile Include="View\SourceMerge.xaml.cs">
       <DependentUpon>SourceMerge.xaml</DependentUpon>
     </Compile>
+    <Page Include="..\..\DMC_Library\ProgressWheel.xaml">
+      <Link>DMC Library\ProgressWheel.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\DMC_Library\ProgressWheelWedge.xaml">
+      <Link>DMC Library\ProgressWheelWedge.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\SourceMerge.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -186,14 +216,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DMCLib\DMC.UI\DMC.UI.csproj">
-      <Project>{457EA463-48C1-4082-91DD-7F4E9A766720}</Project>
-      <Name>DMC.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DMCLib\DMCBase\DMCBase.csproj">
-      <Project>{202083FD-C96C-481C-B2BB-E0138D922933}</Project>
-      <Name>DMCBase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\DotNetSiemensPLCToolBoxLibrary\LibNoDaveConnectionLibrary\DotNetSiemensPLCToolBoxLibrary.csproj">
       <Project>{E3ED87E8-B550-46AC-9196-9688D30EFD29}</Project>
       <Name>DotNetSiemensPLCToolBoxLibrary %28DotNetSiemensPLCToolBoxLibrary\DotNetSiemensPLCToolBoxLibrary%29</Name>
