@@ -74,6 +74,7 @@ namespace S7_DMCToolbox
         public String SelectedAlarmFolder { get; set; }
         public string AlarmWorxExportFilePath { get; set; }
         public string KepwareExportFilePath { get; set; }
+        public string WinCCFlexDigitalAlarmsExportFilePath { get; set; }
 
         public Dictionary<String, Block> AllBlocks
         {
@@ -258,6 +259,36 @@ namespace S7_DMCToolbox
         }
 
         #endregion
+
+        internal void ExportWinCCFlexDigitalAlarms()
+        {
+            DoJob(new ThreadStart(ExportWinCCFlexDigitalAlarmsAsync));
+        }
+
+        internal void ExportWinCCFlexDigitalAlarmsAsync()
+        {
+            if (!(CurrentBlock.Value.Name.ToLower().StartsWith("db")))
+            {
+                return;
+            }
+
+            S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
+            ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
+
+            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, CurrentBlock.Value);
+            //CreateKepwareCSVFromDataTable(exportTable);
+
+            if (!Properties.Settings.Default.RecentlyUsedBlocks.Contains(CurrentBlock.Key))
+            {
+                Properties.Settings.Default.RecentlyUsedBlocks.Insert(0, CurrentBlock.Key);
+                while (Properties.Settings.Default.RecentlyUsedBlocks.Count > 150)
+                {
+                    Properties.Settings.Default.RecentlyUsedBlocks.RemoveAt(150);
+                }
+                Properties.Settings.Default.Save();
+            }
+
+        }
 
 
         internal void ExportKepware()

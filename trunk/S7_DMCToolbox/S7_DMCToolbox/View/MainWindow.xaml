@@ -1,7 +1,7 @@
 ﻿<Window x:Class="S7_DMCToolbox.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:DMC.UI="clr-namespace:DMC.UI;assembly=DMC.UI"
+        xmlns:DMC.UI="clr-namespace:DMC.UI"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:this="clr-namespace:S7_DMCToolbox"
         Height="642" 
@@ -63,6 +63,7 @@
                         <Grid DockPanel.Dock="Bottom" >
                             <DockPanel Height="50" >
                                 <Button DockPanel.Dock="Right" Content="Cancel" Command="{Binding CancelCmd}" Width="75" Margin="5" />
+                                <Button DockPanel.Dock="Right" Content="WinCC Flex" Command="{Binding ExportWinCCFlexDigitalAlarmsCmd}" Width="75" Margin="5" ToolTip="Export Errors datablock to the WinCC Flexible compatible .csv format.\nTo import it to WinCC Flexible: Project menu, Im-/Export, CSV Import, Analog/Discrete Alarms" />
                                 <Button DockPanel.Dock="Right" Content="AlarmWorx" Command="{Binding GetAlarmWorxInfoCmd}" Width="75" Margin="5" />
                                 <Button DockPanel.Dock="Right" Content="Kepware" Command="{Binding ExportKepwareCmd}" Width="75" Margin="5" />
                                 

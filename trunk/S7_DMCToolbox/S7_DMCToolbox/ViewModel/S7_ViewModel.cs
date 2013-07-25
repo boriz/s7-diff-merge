@@ -364,6 +364,39 @@ namespace S7_DMCToolbox
             }
         }
 
+        public ICommand ExportWinCCFlexDigitalAlarmsCmd
+        {
+            get
+            {
+                return new RelayCommand(p => ExportWinCCFlexDigitalAlarms(), z => !S7Model.IsBusy);
+            }
+        }
+
+
+
+        private void ExportWinCCFlexDigitalAlarms()
+        {
+            MessageBox.Show("Not implemented yet");
+
+            VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
+
+            selectFileDialog.Title = "Select Export Location";
+            selectFileDialog.AddExtension = true;
+            selectFileDialog.DefaultExt = ".csv";
+            selectFileDialog.Filter = "CSV File|*.csv";
+            if (Directory.Exists(S7Model.WinCCFlexDigitalAlarmsExportFilePath))
+                selectFileDialog.InitialDirectory = Properties.Settings.Default.WinCCFlexDigitalAlarmsExportFilePath;
+
+            if ((bool)selectFileDialog.ShowDialog())
+            {
+                S7Model.WinCCFlexDigitalAlarmsExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.WinCCFlexDigitalAlarmsExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.Save();
+                S7Model.ExportWinCCFlexDigitalAlarms();
+            }
+
+        }
+
         private void ExportKepware()
         {
             VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
