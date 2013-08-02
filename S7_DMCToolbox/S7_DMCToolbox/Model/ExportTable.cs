@@ -2,6 +2,10 @@
     
     
     public partial class ExportTable {
+        partial class WinCCFlexDigitalAlarmsExportTableDataTable
+        {
+        }
+    
         partial class AlarmWorxExportTableDataTable
         {
         }
