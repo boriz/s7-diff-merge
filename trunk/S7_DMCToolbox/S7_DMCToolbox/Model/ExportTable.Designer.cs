@@ -28,6 +28,8 @@ namespace S7_DMCToolbox.Model {
         
         private AlarmWorxExportTableDataTable tableAlarmWorxExportTable;
         
+        private WinCCFlexDigitalAlarmsExportTableDataTable tableWinCCFlexDigitalAlarmsExportTable;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -61,6 +63,9 @@ namespace S7_DMCToolbox.Model {
                 }
                 if ((ds.Tables["AlarmWorxExportTable"] != null)) {
                     base.Tables.Add(new AlarmWorxExportTableDataTable(ds.Tables["AlarmWorxExportTable"]));
+                }
+                if ((ds.Tables["WinCCFlexDigitalAlarmsExportTable"] != null)) {
+                    base.Tables.Add(new WinCCFlexDigitalAlarmsExportTableDataTable(ds.Tables["WinCCFlexDigitalAlarmsExportTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -97,6 +102,16 @@ namespace S7_DMCToolbox.Model {
         public AlarmWorxExportTableDataTable AlarmWorxExportTable {
             get {
                 return this.tableAlarmWorxExportTable;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public WinCCFlexDigitalAlarmsExportTableDataTable WinCCFlexDigitalAlarmsExportTable {
+            get {
+                return this.tableWinCCFlexDigitalAlarmsExportTable;
             }
         }
         
@@ -173,6 +188,9 @@ namespace S7_DMCToolbox.Model {
                 if ((ds.Tables["AlarmWorxExportTable"] != null)) {
                     base.Tables.Add(new AlarmWorxExportTableDataTable(ds.Tables["AlarmWorxExportTable"]));
                 }
+                if ((ds.Tables["WinCCFlexDigitalAlarmsExportTable"] != null)) {
+                    base.Tables.Add(new WinCCFlexDigitalAlarmsExportTableDataTable(ds.Tables["WinCCFlexDigitalAlarmsExportTable"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -218,6 +236,12 @@ namespace S7_DMCToolbox.Model {
                     this.tableAlarmWorxExportTable.InitVars();
                 }
             }
+            this.tableWinCCFlexDigitalAlarmsExportTable = ((WinCCFlexDigitalAlarmsExportTableDataTable)(base.Tables["WinCCFlexDigitalAlarmsExportTable"]));
+            if ((initTable == true)) {
+                if ((this.tableWinCCFlexDigitalAlarmsExportTable != null)) {
+                    this.tableWinCCFlexDigitalAlarmsExportTable.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -232,6 +256,8 @@ namespace S7_DMCToolbox.Model {
             base.Tables.Add(this.tableKepwareExportTable);
             this.tableAlarmWorxExportTable = new AlarmWorxExportTableDataTable();
             base.Tables.Add(this.tableAlarmWorxExportTable);
+            this.tableWinCCFlexDigitalAlarmsExportTable = new WinCCFlexDigitalAlarmsExportTableDataTable();
+            base.Tables.Add(this.tableWinCCFlexDigitalAlarmsExportTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -243,6 +269,12 @@ namespace S7_DMCToolbox.Model {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private bool ShouldSerializeAlarmWorxExportTable() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializeWinCCFlexDigitalAlarmsExportTable() {
             return false;
         }
         
@@ -306,6 +338,9 @@ namespace S7_DMCToolbox.Model {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void AlarmWorxExportTableRowChangeEventHandler(object sender, AlarmWorxExportTableRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void WinCCFlexDigitalAlarmsExportTableRowChangeEventHandler(object sender, WinCCFlexDigitalAlarmsExportTableRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -2209,6 +2244,437 @@ namespace S7_DMCToolbox.Model {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "AlarmWorxExportTableDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class WinCCFlexDigitalAlarmsExportTableDataTable : global::System.Data.TypedTableBase<WinCCFlexDigitalAlarmsExportTableRow> {
+            
+            private global::System.Data.DataColumn columnAlarmType;
+            
+            private global::System.Data.DataColumn columnAlarmNumber;
+            
+            private global::System.Data.DataColumn columnAlarmClass;
+            
+            private global::System.Data.DataColumn columnTriggerTag;
+            
+            private global::System.Data.DataColumn columnTriggerBitNumber;
+            
+            private global::System.Data.DataColumn columnAcknowledgmentHMI_Tag;
+            
+            private global::System.Data.DataColumn columnAcknowledgmentHMI_TagBitNumber;
+            
+            private global::System.Data.DataColumn columnAcknowledgmentPLC_Tag;
+            
+            private global::System.Data.DataColumn columnAcknowledgmentPLC_TagBitNumber;
+            
+            private global::System.Data.DataColumn columnAlarmGroup;
+            
+            private global::System.Data.DataColumn columnReported;
+            
+            private global::System.Data.DataColumn columnText;
+            
+            private global::System.Data.DataColumn columnFieldInfo;
+            
+            private global::System.Data.DataColumn columnInfotext;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public WinCCFlexDigitalAlarmsExportTableDataTable() {
+                this.TableName = "WinCCFlexDigitalAlarmsExportTable";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal WinCCFlexDigitalAlarmsExportTableDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected WinCCFlexDigitalAlarmsExportTableDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AlarmTypeColumn {
+                get {
+                    return this.columnAlarmType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AlarmNumberColumn {
+                get {
+                    return this.columnAlarmNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AlarmClassColumn {
+                get {
+                    return this.columnAlarmClass;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TriggerTagColumn {
+                get {
+                    return this.columnTriggerTag;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TriggerBitNumberColumn {
+                get {
+                    return this.columnTriggerBitNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AcknowledgmentHMI_TagColumn {
+                get {
+                    return this.columnAcknowledgmentHMI_Tag;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AcknowledgmentHMI_TagBitNumberColumn {
+                get {
+                    return this.columnAcknowledgmentHMI_TagBitNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AcknowledgmentPLC_TagColumn {
+                get {
+                    return this.columnAcknowledgmentPLC_Tag;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AcknowledgmentPLC_TagBitNumberColumn {
+                get {
+                    return this.columnAcknowledgmentPLC_TagBitNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AlarmGroupColumn {
+                get {
+                    return this.columnAlarmGroup;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ReportedColumn {
+                get {
+                    return this.columnReported;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TextColumn {
+                get {
+                    return this.columnText;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FieldInfoColumn {
+                get {
+                    return this.columnFieldInfo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn InfotextColumn {
+                get {
+                    return this.columnInfotext;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public WinCCFlexDigitalAlarmsExportTableRow this[int index] {
+                get {
+                    return ((WinCCFlexDigitalAlarmsExportTableRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event WinCCFlexDigitalAlarmsExportTableRowChangeEventHandler WinCCFlexDigitalAlarmsExportTableRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event WinCCFlexDigitalAlarmsExportTableRowChangeEventHandler WinCCFlexDigitalAlarmsExportTableRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event WinCCFlexDigitalAlarmsExportTableRowChangeEventHandler WinCCFlexDigitalAlarmsExportTableRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event WinCCFlexDigitalAlarmsExportTableRowChangeEventHandler WinCCFlexDigitalAlarmsExportTableRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AddWinCCFlexDigitalAlarmsExportTableRow(WinCCFlexDigitalAlarmsExportTableRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public WinCCFlexDigitalAlarmsExportTableRow AddWinCCFlexDigitalAlarmsExportTableRow(string AlarmType, string AlarmNumber, string AlarmClass, string TriggerTag, string TriggerBitNumber, string AcknowledgmentHMI_Tag, string AcknowledgmentHMI_TagBitNumber, string AcknowledgmentPLC_Tag, string AcknowledgmentPLC_TagBitNumber, string AlarmGroup, string Reported, string Text, string FieldInfo, string Infotext) {
+                WinCCFlexDigitalAlarmsExportTableRow rowWinCCFlexDigitalAlarmsExportTableRow = ((WinCCFlexDigitalAlarmsExportTableRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        AlarmType,
+                        AlarmNumber,
+                        AlarmClass,
+                        TriggerTag,
+                        TriggerBitNumber,
+                        AcknowledgmentHMI_Tag,
+                        AcknowledgmentHMI_TagBitNumber,
+                        AcknowledgmentPLC_Tag,
+                        AcknowledgmentPLC_TagBitNumber,
+                        AlarmGroup,
+                        Reported,
+                        Text,
+                        FieldInfo,
+                        Infotext};
+                rowWinCCFlexDigitalAlarmsExportTableRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowWinCCFlexDigitalAlarmsExportTableRow);
+                return rowWinCCFlexDigitalAlarmsExportTableRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                WinCCFlexDigitalAlarmsExportTableDataTable cln = ((WinCCFlexDigitalAlarmsExportTableDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new WinCCFlexDigitalAlarmsExportTableDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnAlarmType = base.Columns["AlarmType"];
+                this.columnAlarmNumber = base.Columns["AlarmNumber"];
+                this.columnAlarmClass = base.Columns["AlarmClass"];
+                this.columnTriggerTag = base.Columns["TriggerTag"];
+                this.columnTriggerBitNumber = base.Columns["TriggerBitNumber"];
+                this.columnAcknowledgmentHMI_Tag = base.Columns["AcknowledgmentHMI_Tag"];
+                this.columnAcknowledgmentHMI_TagBitNumber = base.Columns["AcknowledgmentHMI_TagBitNumber"];
+                this.columnAcknowledgmentPLC_Tag = base.Columns["AcknowledgmentPLC_Tag"];
+                this.columnAcknowledgmentPLC_TagBitNumber = base.Columns["AcknowledgmentPLC_TagBitNumber"];
+                this.columnAlarmGroup = base.Columns["AlarmGroup"];
+                this.columnReported = base.Columns["Reported"];
+                this.columnText = base.Columns["Text"];
+                this.columnFieldInfo = base.Columns["FieldInfo"];
+                this.columnInfotext = base.Columns["Infotext"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnAlarmType = new global::System.Data.DataColumn("AlarmType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAlarmType);
+                this.columnAlarmNumber = new global::System.Data.DataColumn("AlarmNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAlarmNumber);
+                this.columnAlarmClass = new global::System.Data.DataColumn("AlarmClass", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAlarmClass);
+                this.columnTriggerTag = new global::System.Data.DataColumn("TriggerTag", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTriggerTag);
+                this.columnTriggerBitNumber = new global::System.Data.DataColumn("TriggerBitNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTriggerBitNumber);
+                this.columnAcknowledgmentHMI_Tag = new global::System.Data.DataColumn("AcknowledgmentHMI_Tag", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAcknowledgmentHMI_Tag);
+                this.columnAcknowledgmentHMI_TagBitNumber = new global::System.Data.DataColumn("AcknowledgmentHMI_TagBitNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAcknowledgmentHMI_TagBitNumber);
+                this.columnAcknowledgmentPLC_Tag = new global::System.Data.DataColumn("AcknowledgmentPLC_Tag", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAcknowledgmentPLC_Tag);
+                this.columnAcknowledgmentPLC_TagBitNumber = new global::System.Data.DataColumn("AcknowledgmentPLC_TagBitNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAcknowledgmentPLC_TagBitNumber);
+                this.columnAlarmGroup = new global::System.Data.DataColumn("AlarmGroup", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAlarmGroup);
+                this.columnReported = new global::System.Data.DataColumn("Reported", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnReported);
+                this.columnText = new global::System.Data.DataColumn("Text", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnText);
+                this.columnFieldInfo = new global::System.Data.DataColumn("FieldInfo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFieldInfo);
+                this.columnInfotext = new global::System.Data.DataColumn("Infotext", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInfotext);
+                this.columnAcknowledgmentHMI_TagBitNumber.Caption = "AcknowledgmentHMI_Tag";
+                this.columnAcknowledgmentPLC_Tag.Caption = "AcknowledgmentHMI_TagBitNumber";
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public WinCCFlexDigitalAlarmsExportTableRow NewWinCCFlexDigitalAlarmsExportTableRow() {
+                return ((WinCCFlexDigitalAlarmsExportTableRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new WinCCFlexDigitalAlarmsExportTableRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(WinCCFlexDigitalAlarmsExportTableRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.WinCCFlexDigitalAlarmsExportTableRowChanged != null)) {
+                    this.WinCCFlexDigitalAlarmsExportTableRowChanged(this, new WinCCFlexDigitalAlarmsExportTableRowChangeEvent(((WinCCFlexDigitalAlarmsExportTableRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.WinCCFlexDigitalAlarmsExportTableRowChanging != null)) {
+                    this.WinCCFlexDigitalAlarmsExportTableRowChanging(this, new WinCCFlexDigitalAlarmsExportTableRowChangeEvent(((WinCCFlexDigitalAlarmsExportTableRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.WinCCFlexDigitalAlarmsExportTableRowDeleted != null)) {
+                    this.WinCCFlexDigitalAlarmsExportTableRowDeleted(this, new WinCCFlexDigitalAlarmsExportTableRowChangeEvent(((WinCCFlexDigitalAlarmsExportTableRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.WinCCFlexDigitalAlarmsExportTableRowDeleting != null)) {
+                    this.WinCCFlexDigitalAlarmsExportTableRowDeleting(this, new WinCCFlexDigitalAlarmsExportTableRowChangeEvent(((WinCCFlexDigitalAlarmsExportTableRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemoveWinCCFlexDigitalAlarmsExportTableRow(WinCCFlexDigitalAlarmsExportTableRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                ExportTable ds = new ExportTable();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "WinCCFlexDigitalAlarmsExportTableDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -4907,6 +5373,427 @@ namespace S7_DMCToolbox.Model {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class WinCCFlexDigitalAlarmsExportTableRow : global::System.Data.DataRow {
+            
+            private WinCCFlexDigitalAlarmsExportTableDataTable tableWinCCFlexDigitalAlarmsExportTable;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal WinCCFlexDigitalAlarmsExportTableRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableWinCCFlexDigitalAlarmsExportTable = ((WinCCFlexDigitalAlarmsExportTableDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AlarmType {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AlarmType\' in table \'WinCCFlexDigitalAlarmsExportTable\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AlarmNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AlarmNumber\' in table \'WinCCFlexDigitalAlarmsExportTable\' i" +
+                                "s DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AlarmClass {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmClassColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AlarmClass\' in table \'WinCCFlexDigitalAlarmsExportTable\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmClassColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TriggerTag {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.TriggerTagColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TriggerTag\' in table \'WinCCFlexDigitalAlarmsExportTable\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.TriggerTagColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TriggerBitNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.TriggerBitNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TriggerBitNumber\' in table \'WinCCFlexDigitalAlarmsExportTab" +
+                                "le\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.TriggerBitNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AcknowledgmentHMI_Tag {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AcknowledgmentHMI_Tag\' in table \'WinCCFlexDigitalAlarmsExpo" +
+                                "rtTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AcknowledgmentHMI_TagBitNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagBitNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AcknowledgmentHMI_TagBitNumber\' in table \'WinCCFlexDigitalA" +
+                                "larmsExportTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagBitNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AcknowledgmentPLC_Tag {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AcknowledgmentPLC_Tag\' in table \'WinCCFlexDigitalAlarmsExpo" +
+                                "rtTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AcknowledgmentPLC_TagBitNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagBitNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AcknowledgmentPLC_TagBitNumber\' in table \'WinCCFlexDigitalA" +
+                                "larmsExportTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagBitNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string AlarmGroup {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmGroupColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AlarmGroup\' in table \'WinCCFlexDigitalAlarmsExportTable\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmGroupColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Reported {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.ReportedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Reported\' in table \'WinCCFlexDigitalAlarmsExportTable\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.ReportedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Text {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.TextColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Text\' in table \'WinCCFlexDigitalAlarmsExportTable\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.TextColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string FieldInfo {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.FieldInfoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FieldInfo\' in table \'WinCCFlexDigitalAlarmsExportTable\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.FieldInfoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Infotext {
+                get {
+                    try {
+                        return ((string)(this[this.tableWinCCFlexDigitalAlarmsExportTable.InfotextColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Infotext\' in table \'WinCCFlexDigitalAlarmsExportTable\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWinCCFlexDigitalAlarmsExportTable.InfotextColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAlarmTypeNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AlarmTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAlarmTypeNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAlarmNumberNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AlarmNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAlarmNumberNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAlarmClassNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AlarmClassColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAlarmClassNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmClassColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTriggerTagNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.TriggerTagColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTriggerTagNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.TriggerTagColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTriggerBitNumberNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.TriggerBitNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTriggerBitNumberNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.TriggerBitNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAcknowledgmentHMI_TagNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAcknowledgmentHMI_TagNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAcknowledgmentHMI_TagBitNumberNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagBitNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAcknowledgmentHMI_TagBitNumberNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentHMI_TagBitNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAcknowledgmentPLC_TagNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAcknowledgmentPLC_TagNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAcknowledgmentPLC_TagBitNumberNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagBitNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAcknowledgmentPLC_TagBitNumberNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AcknowledgmentPLC_TagBitNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAlarmGroupNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.AlarmGroupColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAlarmGroupNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.AlarmGroupColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsReportedNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.ReportedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetReportedNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.ReportedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTextNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.TextColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTextNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.TextColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFieldInfoNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.FieldInfoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFieldInfoNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.FieldInfoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsInfotextNull() {
+                return this.IsNull(this.tableWinCCFlexDigitalAlarmsExportTable.InfotextColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetInfotextNull() {
+                this[this.tableWinCCFlexDigitalAlarmsExportTable.InfotextColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -4960,6 +5847,40 @@ namespace S7_DMCToolbox.Model {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public AlarmWorxExportTableRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class WinCCFlexDigitalAlarmsExportTableRowChangeEvent : global::System.EventArgs {
+            
+            private WinCCFlexDigitalAlarmsExportTableRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public WinCCFlexDigitalAlarmsExportTableRowChangeEvent(WinCCFlexDigitalAlarmsExportTableRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public WinCCFlexDigitalAlarmsExportTableRow Row {
                 get {
                     return this.eventRow;
                 }

@@ -376,8 +376,6 @@ namespace S7_DMCToolbox
 
         private void ExportWinCCFlexDigitalAlarms()
         {
-            MessageBox.Show("Not implemented yet");
-
             VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
 
             selectFileDialog.Title = "Select Export Location";

@@ -260,6 +260,9 @@ namespace S7_DMCToolbox
 
         #endregion
 
+
+        #region WinCC Flexible Digital Alarms
+
         internal void ExportWinCCFlexDigitalAlarms()
         {
             DoJob(new ThreadStart(ExportWinCCFlexDigitalAlarmsAsync));
@@ -273,23 +276,100 @@ namespace S7_DMCToolbox
             }
 
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
-            ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
+            ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable = new ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable();
 
-            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, CurrentBlock.Value);
-            //CreateKepwareCSVFromDataTable(exportTable);
-
-            if (!Properties.Settings.Default.RecentlyUsedBlocks.Contains(CurrentBlock.Key))
-            {
-                Properties.Settings.Default.RecentlyUsedBlocks.Insert(0, CurrentBlock.Key);
-                while (Properties.Settings.Default.RecentlyUsedBlocks.Count > 150)
-                {
-                    Properties.Settings.Default.RecentlyUsedBlocks.RemoveAt(150);
-                }
-                Properties.Settings.Default.Save();
-            }
-
+            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, blk.Structure.Children);
+            CreateWinCCFlexDigitalAlarmsCSVFromDataTable(exportTable);
         }
 
+        private void CreateWinCCFlexDigitalAlarmsCSVFromDataTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(@"// WinCC flexible 2008 SP1 Advanced V 1.3 SP 1.0 (1.67.02),,,,,,,,,,,,,");
+            sb.AppendLine(@"// Automatically generated alarm export file.,,,,,,,,,,,,,");
+            sb.AppendLine(@"// 6/8/2010 7:27:50 PM,,,,,,,,,,,,,");
+            sb.AppendLine(@"// @V1.0.0,,,,,,,,,,,,,");
+            sb.AppendLine(@",,,,,,,,,,,,,");
+
+            //sb.AppendLine(@"//Alarm type,Alarm number,Alarm class,Trigger tag,Trigger bit number,Acknowledgment HMI tag,Acknowledgment HMI tag bit number,Acknowledgment PLC tag,Acknowledgment PLC tag bit number,Alarm group,Reported,Text[en-US],Field info[01],Infotext[en-US]");            
+            IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().
+                                              Select(column => column.ColumnName.Replace("_", " "));
+            sb.AppendLine(string.Join(",", columnNames));
+            
+            sb.AppendLine(@",,,,,,,,,,,,,");
+
+            // Append all rows
+            foreach (DataRow row in exportTable.Rows)
+            {
+                IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            File.WriteAllText(WinCCFlexDigitalAlarmsExportFilePath, sb.ToString());
+        }
+
+        private void AddChildrenWinCCFlexDigitalAlarmsExportTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable, List<S7DataRow> Children)
+        {
+            foreach (S7DataRow child in Children)
+            {
+                if (!child.IsArray)
+                {
+                    ExportTable.WinCCFlexDigitalAlarmsExportTableRow newRow = exportTable.NewWinCCFlexDigitalAlarmsExportTableRow();
+                    
+                    // Alarm type,Alarm number,Alarm class,Trigger tag,Trigger bit number,Acknowledgment HMI tag,Acknowledgment HMI tag bit number,Acknowledgment PLC tag,Acknowledgment PLC tag bit number,Alarm group,Reported,Text[en-US],Field info[01],Infotext[en-US]
+                    // D,8,Alarms,dbErrors,8,,,,,,0,en-US= Global Sheeting E-Stop button #01 (HW reset required),,en-US= Global Sheeting E-Stop button #01 (HW reset required)
+
+                    switch (child.DataType)
+                    {
+                        case S7DataRowType.BOOL:
+                            newRow.AlarmType = "D";
+
+                            // Calculate trigger bit/alarm number
+                            int iWinCC_BitNumber;
+                            if (child.BlockAddress.ByteAddress % 2 == 0) 
+                            {
+                                iWinCC_BitNumber = (child.BlockAddress.ByteAddress + 1) * 8 + child.BlockAddress.BitAddress;
+                            }
+                            else
+                            {
+                                iWinCC_BitNumber = (child.BlockAddress.ByteAddress - 1) * 8 + child.BlockAddress.BitAddress;
+                            }
+                            newRow.TriggerBitNumber = iWinCC_BitNumber.ToString();
+                            newRow.AlarmNumber = newRow.TriggerBitNumber;
+
+                            newRow.AlarmClass = "Alarms";
+                            newRow.TriggerTag = CurrentBlock.Value.SymbolicName;
+
+                            // Cleanup message text
+                            string strAlarmText = child.Parent.Parent.Comment + " " + child.Parent.Comment + " " + child.Comment;
+                            if (strAlarmText.StartsWith("  (General) "))
+                            {
+                                strAlarmText = strAlarmText.Replace("  (General) ", "");
+                            }
+                            strAlarmText = strAlarmText.Replace(" (General) ", ".");
+                            strAlarmText = strAlarmText.Replace("  ", " ");
+
+                            newRow.Text = "en-US=" + strAlarmText;
+                            newRow.Infotext = newRow.Text;
+
+                            exportTable.AddWinCCFlexDigitalAlarmsExportTableRow(newRow);
+                            break;
+                        case S7DataRowType.UDT:
+                        case S7DataRowType.STRUCT:
+                            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, child.Children);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+
+        #endregion
+
+
+        #region Export Kepware
 
         internal void ExportKepware()
         {
@@ -412,6 +492,11 @@ namespace S7_DMCToolbox
             }
         }
 
+        #endregion
+
+
+        #region Export AlarmWorX
+
         internal void ExportAlarmWorx()
         {
             if (!Properties.Settings.Default.RecentOPCServers.Contains(SelectedOPCServer))
@@ -495,7 +580,8 @@ namespace S7_DMCToolbox
             }
         }
 
-       
+        #endregion
+
     }
 }
 
