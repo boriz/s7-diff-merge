@@ -28,7 +28,8 @@ namespace S7_DMCToolbox
             VM = TryFindResource("VM") as S7_ViewModel;
             VM.InitFromCommandLineArguments(App.StartupArgs);
 
-            //Set title of window to current assembly version number
+            // Set title of window to current assembly version number
+            // TODO: Get ClickOnce version instead?
             Version myVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             this.Title = this.Title + " v" + myVersion.Major + "." + myVersion.Minor + "." + myVersion.Build;
             Closing += VM.OnClosing;

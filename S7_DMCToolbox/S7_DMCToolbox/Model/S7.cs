@@ -278,7 +278,7 @@ namespace S7_DMCToolbox
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
             ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable = new ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable();
 
-            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, blk.Structure.Children);
+            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, blk.Structure.Children, "");
             CreateWinCCFlexDigitalAlarmsCSVFromDataTable(exportTable);
         }
 
@@ -308,7 +308,7 @@ namespace S7_DMCToolbox
             File.WriteAllText(WinCCFlexDigitalAlarmsExportFilePath, sb.ToString());
         }
 
-        private void AddChildrenWinCCFlexDigitalAlarmsExportTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable, List<S7DataRow> Children)
+        private void AddChildrenWinCCFlexDigitalAlarmsExportTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable, List<S7DataRow> Children, string strCommentPath)
         {
             foreach (S7DataRow child in Children)
             {
@@ -322,7 +322,7 @@ namespace S7_DMCToolbox
                     switch (child.DataType)
                     {
                         case S7DataRowType.BOOL:
-                            newRow.AlarmType = "D";
+                            newRow.AlarmType = "\"" + "D" + "\"";
 
                             // Calculate trigger bit/alarm number
                             int iWinCC_BitNumber;
@@ -334,29 +334,20 @@ namespace S7_DMCToolbox
                             {
                                 iWinCC_BitNumber = (child.BlockAddress.ByteAddress - 1) * 8 + child.BlockAddress.BitAddress;
                             }
-                            newRow.TriggerBitNumber = iWinCC_BitNumber.ToString();
-                            newRow.AlarmNumber = newRow.TriggerBitNumber;
+                            newRow.TriggerBitNumber = "\"" + iWinCC_BitNumber.ToString() + "\"";
+                            newRow.AlarmNumber = "\"" + iWinCC_BitNumber.ToString() + "\"";
 
-                            newRow.AlarmClass = "Alarms";
-                            newRow.TriggerTag = CurrentBlock.Value.SymbolicName;
-
-                            // Cleanup message text
-                            string strAlarmText = child.Parent.Parent.Comment + " " + child.Parent.Comment + " " + child.Comment;
-                            if (strAlarmText.StartsWith("  (General) "))
-                            {
-                                strAlarmText = strAlarmText.Replace("  (General) ", "");
-                            }
-                            strAlarmText = strAlarmText.Replace(" (General) ", ".");
-                            strAlarmText = strAlarmText.Replace("  ", " ");
-
-                            newRow.Text = "en-US=" + strAlarmText;
-                            newRow.Infotext = newRow.Text;
+                            newRow.AlarmClass = "\"" + "Alarms" + "\"";
+                            newRow.TriggerTag = "\"" + CurrentBlock.Value.SymbolicName;
+                            
+                            newRow.Text = "\"" + "en-US=" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";  // Message text
+                            newRow.Infotext = "\"" + "en-US=" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";
 
                             exportTable.AddWinCCFlexDigitalAlarmsExportTableRow(newRow);
                             break;
                         case S7DataRowType.UDT:
                         case S7DataRowType.STRUCT:
-                            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, child.Children);
+                            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, child.Children, strCommentPath.Trim() + " " + child.Comment.Trim());
                             break;
                         default:
                             break;
@@ -530,7 +521,7 @@ namespace S7_DMCToolbox
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
             ExportTable.AlarmWorxExportTableDataTable exportTable = new ExportTable.AlarmWorxExportTableDataTable();
 
-            AddChildrenToAlarmworxExportTable(exportTable, blk.Structure.Children);
+            AddChildrenToAlarmworxExportTable(exportTable, blk.Structure.Children, "");
             CreateAlarmWorxCSVFromDataTable(exportTable);
         }
 
@@ -551,7 +542,7 @@ namespace S7_DMCToolbox
             File.WriteAllText(AlarmWorxExportFilePath, sb.ToString());
         }
 
-        private void AddChildrenToAlarmworxExportTable(ExportTable.AlarmWorxExportTableDataTable exportTable, List<S7DataRow> Children)
+        private void AddChildrenToAlarmworxExportTable(ExportTable.AlarmWorxExportTableDataTable exportTable, List<S7DataRow> Children, string strCommentPath)
         {
             foreach (S7DataRow child in Children)
             {
@@ -566,12 +557,14 @@ namespace S7_DMCToolbox
                             newRow.Description = "\"" + child.Comment + "\"";
                             newRow.LastModified = DateTime.Now;
                             newRow.Input1 = "\"" + SelectedOPCServer + "." + CurrentBlock.Value.SymbolicName + "." + child.StructuredName + "\"";
-                            newRow.BaseText = "\"" + child.Parent.Parent.Comment + " " + child.Parent.Comment + " " + child.Comment + "\"";
+                            newRow.BaseText = "\"" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";  // Message text 
+                            newRow.DIG_MsgText = " ";   // Prevents 'Digital Alarm' text at the end of each message
                             exportTable.AddAlarmWorxExportTableRow(newRow);
                             break;
                         case S7DataRowType.UDT:
                         case S7DataRowType.STRUCT:
-                            AddChildrenToAlarmworxExportTable(exportTable, child.Children);
+                            // Build comments path string, separate each level by the space
+                            AddChildrenToAlarmworxExportTable(exportTable, child.Children, strCommentPath.Trim() + " " + child.Comment.Trim());
                             break;
                         default:
                             break;
