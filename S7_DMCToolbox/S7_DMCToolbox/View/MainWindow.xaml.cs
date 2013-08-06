@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Deployment.Application;
+
 
 namespace S7_DMCToolbox
 {
@@ -29,8 +31,13 @@ namespace S7_DMCToolbox
             VM.InitFromCommandLineArguments(App.StartupArgs);
 
             // Set title of window to current assembly version number
-            // TODO: Get ClickOnce version instead?
             Version myVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                // Override version if deployed via ClickOnce
+                myVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion;
+            }
+
             this.Title = this.Title + " v" + myVersion.Major + "." + myVersion.Minor + "." + myVersion.Build;
             Closing += VM.OnClosing;
         }
