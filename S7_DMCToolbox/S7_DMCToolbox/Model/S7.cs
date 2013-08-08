@@ -474,19 +474,75 @@ namespace S7_DMCToolbox
                 else //IsArray = true
                 {
                     List<S7DataRow> arrayList = new List<S7DataRow>();
-                    
+                    int ArrayBitAdder = 0;
+                    int ArrayByteAdder = 0;
                     for (int i=child.ArrayStart.First();i <= child.ArrayStop.Last();i++)
                     {
-                        AddChildrenToKepwareExportTable(exportTable, child.Children, ParentPath + "." + child.Name + "[" + i + "]", blk, (i - child.ArrayStart.First()) * (child.ByteLength / (child.ArrayStop.First() - child.ArrayStart.First() + 1)));
+                        ExportTable.KepwareExportTableRow newRow = exportTable.NewKepwareExportTableRow();
+                        newRow.Respect_Data_Type = "1";
+                        newRow.Client_Access = "R/W";
+                        newRow.Scan_Rate = "100";
+                        newRow.Address = child.BlockAddress.ToString();
+                        newRow.Tag_Name = ParentPath + "." + child.Name + "[" + i + "]";
+                        newRow.Description = child.Comment;
+                        int BitAddress = child.BlockAddress.BitAddress + ArrayBitAdder;
+                        int ByteAddress = child.BlockAddress.ByteAddress + ByteAdder + ArrayByteAdder + (i - child.ArrayStart.First()) * (child.ByteLength / (child.ArrayStop.First() - child.ArrayStart.First() + 1));
+                        switch (child.DataType)
+                        {
+                            case S7DataRowType.BOOL:
+                                newRow.Data_Type = "Boolean";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBX" + ByteAddress + "." + BitAddress;
+                                exportTable.AddKepwareExportTableRow(newRow);
+                                ArrayBitAdder++;
+                                if (ArrayBitAdder == 8)
+                                {
+                                    ArrayBitAdder = 0;
+                                    ArrayByteAdder++;
+                                }
+                                break;
+                            case S7DataRowType.BYTE:
+                                newRow.Data_Type = "Byte";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBB" + ByteAddress;
+                                exportTable.AddKepwareExportTableRow(newRow);
+                                break;
+                            case S7DataRowType.DINT:
+                            case S7DataRowType.DWORD:
+                            case S7DataRowType.TIME:
+                                newRow.Data_Type = "DWord";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBD" + ByteAddress;
+                                exportTable.AddKepwareExportTableRow(newRow);
+                                break;
+                            case S7DataRowType.WORD:
+                                newRow.Data_Type = "Word";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBW" + ByteAddress;
+                                exportTable.AddKepwareExportTableRow(newRow);
+                                break;
+                            case S7DataRowType.INT:
+                                newRow.Data_Type = "Short";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBW" + ByteAddress;
+                                exportTable.AddKepwareExportTableRow(newRow);
+                                break;
+                            case S7DataRowType.REAL:
+                                newRow.Data_Type = "FLOAT";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBD" + ByteAddress;
+                                exportTable.AddKepwareExportTableRow(newRow);
+                                break;
+                            case S7DataRowType.STRING:
+                                newRow.Data_Type = "String";
+                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".String" + ByteAddress + "." + (child.ByteLength - 2);
+                                exportTable.AddKepwareExportTableRow(newRow);
+
+                                break;
+                            case S7DataRowType.UDT:
+                            case S7DataRowType.STRUCT:
+                                AddChildrenToKepwareExportTable(exportTable, child.Children, ParentPath + "." + child.Name + "[" + i + "]", blk, (i - child.ArrayStart.First()) * (child.ByteLength / (child.ArrayStop.First() - child.ArrayStart.First() + 1)) + ByteAdder);
+                                break;
+                        }
+
                     }
                 }
             }
         }
-
-        #endregion
-
-
-        #region Export AlarmWorX
 
         internal void ExportAlarmWorx()
         {
