@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>\\dmc-server\SharedDrive\Install Files\DMC Deployment\S7 DMC Toolbox\|publish\|C:\Projects\DMC\s7-diff-merge\S7_DMCToolbox\S7_DMCToolbox\publish\|C:\Projects\DMC\s7-diff-merge-publish\|/publish/</PublishUrlHistory>
-    <InstallUrlHistory>http://s7diffmerge.codeplex.com/releases/clickonce/|https://code.google.com/p/s7-diff-merge/source/browse/publish/</InstallUrlHistory>
+    <PublishUrlHistory>publish\|http://dmc.blob.core.windows.net/s7-toolbox-clickonce/|\\dmc-server\SharedDrive\Install Files\DMC Deployment\S7 DMC Toolbox\|C:\Projects\DMC\s7-diff-merge\S7_DMCToolbox\S7_DMCToolbox\publish\|C:\Projects\DMC\s7-diff-merge-publish\</PublishUrlHistory>
+    <InstallUrlHistory>http://dmc.blob.core.windows.net/s7-toolbox-clickonce/|http://s7diffmerge.codeplex.com/releases/clickonce/|https://code.google.com/p/s7-diff-merge/source/browse/publish/</InstallUrlHistory>
     <SupportUrlHistory>http://www.dmcinfo.com</SupportUrlHistory>
     <UpdateUrlHistory />
     <BootstrapperUrlHistory />
