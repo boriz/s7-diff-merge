@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://s7diffmerge.codeplex.com/releases/clickonce/</InstallUrl>
+    <InstallUrl>http://dmc.blob.core.windows.net/s7-generatesource-clickonce/</InstallUrl>
     <SupportUrl>http://www.dmcinfo.com</SupportUrl>
     <ProductName>S7 DMC DiffMerge</ProductName>
     <PublisherName>DMC, Inc.</PublisherName>
@@ -36,7 +36,7 @@
     <WebPage>download.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.5.2.0</ApplicationVersion>
+    <ApplicationVersion>1.5.3.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
