@@ -8,3 +8,9 @@ Complete HMI diff/merge
 symbol table diff/merge
 Merge both dirictions
 	Switch left/right projects
+Issue parsing single-line declared arrays with comments
+	Parameters.cs, line 201. 
+
+Install path:
+	http://dmc.blob.core.windows.net/s7-generatesource-clickonce/download.htm	
+	http://dmc.blob.core.windows.net/s7-toolbox-clickonce/download.htm

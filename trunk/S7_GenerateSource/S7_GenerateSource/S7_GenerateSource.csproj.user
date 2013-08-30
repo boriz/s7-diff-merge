@@ -2,8 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <PublishUrlHistory>publish\|\\dmc-server\SharedDrive\Install Files\DMC Deployment\S7 DMC DiffMerge\</PublishUrlHistory>
-    <InstallUrlHistory>http://s7diffmerge.codeplex.com/releases/clickonce/</InstallUrlHistory>
-    <SupportUrlHistory />
+    <InstallUrlHistory>http://dmc.blob.core.windows.net/s7-generatesource-clickonce/|http://s7diffmerge.codeplex.com/releases/clickonce/</InstallUrlHistory>
+    <SupportUrlHistory>http://www.dmcinfo.com</SupportUrlHistory>
     <UpdateUrlHistory />
     <BootstrapperUrlHistory />
     <ErrorReportUrlHistory />
