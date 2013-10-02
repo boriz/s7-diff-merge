@@ -187,5 +187,20 @@ namespace S7_DMCToolbox.Properties {
                 this["WinCCFlexDigitalAlarmsExportFilePath"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AllBlocksExportFilePath
+        {
+            get
+            {
+                return ((string)(this["AllBlocksExportFilePath"]));
+            }
+            set
+            {
+                this["AllBlocksExportFilePath"] = value;
+            }
+        }
     }
 }
