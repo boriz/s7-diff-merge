@@ -256,6 +256,7 @@ namespace S7_DMCToolbox
                 NotifyPropertyChanged("dbFilter");
             }
         }
+
         public Boolean recentFilter
         {
             get
@@ -271,6 +272,7 @@ namespace S7_DMCToolbox
                 NotifyPropertyChanged("recentFilter");
             }
         }
+
         public String SelectedOPCServer
         {
             get
@@ -289,6 +291,7 @@ namespace S7_DMCToolbox
                 S7Model.SelectedOPCServer = value;
             }
         }
+
         public String SelectedAlarmFolder
         {
             get
@@ -372,7 +375,13 @@ namespace S7_DMCToolbox
             }
         }
 
-
+        public ICommand ExportAllBlocksCmd
+        {
+            get
+            {
+                return new RelayCommand(p => ExportAllBlocks(), z => !S7Model.IsBusy);
+            }
+        }
 
         private void ExportWinCCFlexDigitalAlarms()
         {
@@ -443,6 +452,23 @@ namespace S7_DMCToolbox
             
         }
 
+        private void ExportAllBlocks()
+        {
+            VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
+            selectFileDialog.AddExtension = true;
+            selectFileDialog.DefaultExt = ".csv";
+            selectFileDialog.Title = "Select Export Location";
+            selectFileDialog.Filter = "CSV File|*.csv";
+            if (Directory.Exists(S7Model.AlarmWorxExportFilePath))
+                selectFileDialog.InitialDirectory = Properties.Settings.Default.AllBlocksExportFilePath;
+
+            if ((bool)selectFileDialog.ShowDialog())// == DialogResult.OK)
+            {
+                // TODO: Implement me
+            }
+
+        }
+
         public ICommand CancelCmd
         {
             get
@@ -502,6 +528,7 @@ namespace S7_DMCToolbox
             {
                 Properties.Settings.Default.RecentAlarmFolderNames = new System.Collections.Specialized.StringCollection();
             }
+
             cvsBlocks = new CollectionViewSource();
             cvsBlocks.Filter += new FilterEventHandler(cvsBlocks_Filter);
             if ((Args != null) && (Args.Count() > 0))
