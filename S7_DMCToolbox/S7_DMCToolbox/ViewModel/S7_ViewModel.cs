@@ -459,12 +459,15 @@ namespace S7_DMCToolbox
             selectFileDialog.DefaultExt = ".csv";
             selectFileDialog.Title = "Select Export Location";
             selectFileDialog.Filter = "CSV File|*.csv";
-            if (Directory.Exists(S7Model.AlarmWorxExportFilePath))
+            if (Directory.Exists(S7Model.AllBlocksExportFilePath))
                 selectFileDialog.InitialDirectory = Properties.Settings.Default.AllBlocksExportFilePath;
 
             if ((bool)selectFileDialog.ShowDialog())// == DialogResult.OK)
             {
-                // TODO: Implement me
+                S7Model.AllBlocksExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.AllBlocksExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.Save();
+                S7Model.ExportAllBlocks();
             }
 
         }

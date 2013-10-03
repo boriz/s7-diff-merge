@@ -63,12 +63,28 @@
                         <Grid DockPanel.Dock="Bottom" >
                             <DockPanel Height="50" >
                                 <Button DockPanel.Dock="Right" Content="Cancel" Command="{Binding CancelCmd}" Width="75" Margin="5" />
-                                <Button DockPanel.Dock="Right" Content="All Blocks" Command="{Binding ExportAllBlocksCmd}" Width="75" Margin="5" ToolTip="Export all blocks with comments to .csv file.\nThis file could used fo searching a particular block.\nUsefull for searching libraries." />
-                                <Button DockPanel.Dock="Right" Content="WinCC Flex" Command="{Binding ExportWinCCFlexDigitalAlarmsCmd}" Width="75" Margin="5" ToolTip="Export Errors datablock to the WinCC Flexible compatible .csv format.\nTo import it to WinCC Flexible: Project menu, Im-/Export, CSV Import, Analog/Discrete Alarms" />
+                                <Button DockPanel.Dock="Right" Content="All Blocks" Command="{Binding ExportAllBlocksCmd}" Width="75" Margin="5" >
+                                    <Button.ToolTip>
+                                        <TextBlock>
+                                            Export all blocks with comments to .csv file.<LineBreak/>
+                                            This file could used fo searching a particular block.<LineBreak/>
+                                            Usefull for searching libraries.
+                                        </TextBlock>
+                                    </Button.ToolTip>
+                                </Button>
+                                <Button DockPanel.Dock="Right" Content="WinCC Flex" Command="{Binding ExportWinCCFlexDigitalAlarmsCmd}" Width="75" Margin="5">
+                                    <Button.ToolTip>
+                                        <TextBlock>
+                                            Export Errors datablock to the WinCC Flexible compatible .csv format.<LineBreak/>
+                                            To import it to WinCC Flexible:<LineBreak/>
+                                            <Run Foreground="Transparent">Tab</Run> Delete all discrete alarms. <LineBreak/>
+                                            <Run Foreground="Transparent">Tab</Run> Project menu, Im-/Export, CSV Import, Analog/Discrete Alarms
+                                        </TextBlock>
+                                    </Button.ToolTip>                                    
+                                </Button>
                                 <Button DockPanel.Dock="Right" Content="AlarmWorx" Command="{Binding GetAlarmWorxInfoCmd}" Width="75" Margin="5" />
                                 <Button DockPanel.Dock="Right" Content="Kepware" Command="{Binding ExportKepwareCmd}" Width="75" Margin="5" />
-                                
-                                
+                                                                
                                     <Viewbox Height="35" Width="35" >
                                     <DMC.UI:ProgressWheel Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="5">
                                         <!--<DMC.UI:ProgressWheel.RenderTransform>
