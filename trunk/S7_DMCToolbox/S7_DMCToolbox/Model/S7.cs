@@ -75,6 +75,7 @@ namespace S7_DMCToolbox
         public string AlarmWorxExportFilePath { get; set; }
         public string KepwareExportFilePath { get; set; }
         public string WinCCFlexDigitalAlarmsExportFilePath { get; set; }
+        public string AllBlocksExportFilePath { get; set; }
 
         public Dictionary<String, Block> AllBlocks
         {
@@ -285,24 +286,24 @@ namespace S7_DMCToolbox
         private void CreateWinCCFlexDigitalAlarmsCSVFromDataTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(@"// WinCC flexible 2008 SP1 Advanced V 1.3 SP 1.0 (1.67.02),,,,,,,,,,,,,");
-            sb.AppendLine(@"// Automatically generated alarm export file.,,,,,,,,,,,,,");
-            sb.AppendLine(@"// 6/8/2010 7:27:50 PM,,,,,,,,,,,,,");
-            sb.AppendLine(@"// @V1.0.0,,,,,,,,,,,,,");
-            sb.AppendLine(@",,,,,,,,,,,,,");
+            sb.AppendLine(@"// WinCC flexible 2008 SP3 Advanced V 1.4.0.0 (1.16.16)");
+            sb.AppendLine(@"// Automatically generated alarm export file.");
+            sb.AppendLine(@"// " + DateTime.Now.ToString("M/d/yyyy h:m:s tt"));
+            sb.AppendLine(@"// @V1.0.0");
+            sb.AppendLine(@"");
 
             //sb.AppendLine(@"//Alarm type,Alarm number,Alarm class,Trigger tag,Trigger bit number,Acknowledgment HMI tag,Acknowledgment HMI tag bit number,Acknowledgment PLC tag,Acknowledgment PLC tag bit number,Alarm group,Reported,Text[en-US],Field info[01],Infotext[en-US]");            
             IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().
                                               Select(column => column.ColumnName.Replace("_", " "));
-            sb.AppendLine(string.Join(",", columnNames));
-            
-            sb.AppendLine(@",,,,,,,,,,,,,");
+            sb.AppendLine(@"//" + string.Join("\t", columnNames));
+
+            sb.AppendLine(@"");
 
             // Append all rows
             foreach (DataRow row in exportTable.Rows)
             {
                 IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
-                sb.AppendLine(string.Join(",", fields));
+                sb.AppendLine(string.Join("\t", fields));
             }
 
             File.WriteAllText(WinCCFlexDigitalAlarmsExportFilePath, sb.ToString());
@@ -335,10 +336,10 @@ namespace S7_DMCToolbox
                                 iWinCC_BitNumber = (child.BlockAddress.ByteAddress - 1) * 8 + child.BlockAddress.BitAddress;
                             }
                             newRow.TriggerBitNumber = "\"" + iWinCC_BitNumber.ToString() + "\"";
-                            newRow.AlarmNumber = "\"" + iWinCC_BitNumber.ToString() + "\"";
+                            newRow.AlarmNumber = "\"" + (child.BlockAddress.ByteAddress * 16 + child.BlockAddress.BitAddress + 1).ToString() + "\"";
 
                             newRow.AlarmClass = "\"" + "Alarms" + "\"";
-                            newRow.TriggerTag = "\"" + CurrentBlock.Value.SymbolicName;
+                            newRow.TriggerTag = "\"" + CurrentBlock.Value.SymbolicName + "\"";
                             
                             newRow.Text = "\"" + "en-US=" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";  // Message text
                             newRow.Infotext = "\"" + "en-US=" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";
@@ -369,33 +370,21 @@ namespace S7_DMCToolbox
 
         internal void ExportAllBlocksAsync()
         {
-            if (!(CurrentBlock.Value.Name.ToLower().StartsWith("db")))
-            {
-                return;
-            }
+            ExportTable.AllBlocksExportTableDataTable exportTable = new ExportTable.AllBlocksExportTableDataTable();
 
-            S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
-            ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable = new ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable();
-
-            AddChildrenExportAllBlocksExportTable(exportTable, blk.Structure.Children, "");
+            AddChildrenExportAllBlocksExportTable(exportTable, AllBlocks);
             CreateExportAllBlocksCSVFromDataTable(exportTable);
         }
 
-        private void CreateExportAllBlocksCSVFromDataTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable)
+        private void CreateExportAllBlocksCSVFromDataTable(ExportTable.AllBlocksExportTableDataTable exportTable)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(@"// WinCC flexible 2008 SP1 Advanced V 1.3 SP 1.0 (1.67.02),,,,,,,,,,,,,");
-            sb.AppendLine(@"// Automatically generated alarm export file.,,,,,,,,,,,,,");
-            sb.AppendLine(@"// 6/8/2010 7:27:50 PM,,,,,,,,,,,,,");
-            sb.AppendLine(@"// @V1.0.0,,,,,,,,,,,,,");
-            sb.AppendLine(@",,,,,,,,,,,,,");
+            sb.AppendLine(@"Test");
 
             //sb.AppendLine(@"//Alarm type,Alarm number,Alarm class,Trigger tag,Trigger bit number,Acknowledgment HMI tag,Acknowledgment HMI tag bit number,Acknowledgment PLC tag,Acknowledgment PLC tag bit number,Alarm group,Reported,Text[en-US],Field info[01],Infotext[en-US]");            
             IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().
                                               Select(column => column.ColumnName.Replace("_", " "));
-            sb.AppendLine(string.Join(",", columnNames));
-
-            sb.AppendLine(@",,,,,,,,,,,,,");
+            sb.AppendLine(@"Space");
 
             // Append all rows
             foreach (DataRow row in exportTable.Rows)
@@ -404,53 +393,48 @@ namespace S7_DMCToolbox
                 sb.AppendLine(string.Join(",", fields));
             }
 
-            File.WriteAllText(WinCCFlexDigitalAlarmsExportFilePath, sb.ToString());
+
+            File.WriteAllText(AllBlocksExportFilePath, sb.ToString());
         }
 
-        private void AddChildrenExportAllBlocksExportTable(ExportTable.WinCCFlexDigitalAlarmsExportTableDataTable exportTable, List<S7DataRow> Children, string strCommentPath)
+        private void AddChildrenExportAllBlocksExportTable(ExportTable.AllBlocksExportTableDataTable exportTable, Dictionary<String, Block> AllBlocks)
         {
-            foreach (S7DataRow child in Children)
+            foreach (Block blk in AllBlocks.Values)
             {
-                if (!child.IsArray)
+                // Fill block parameters
+                if (blk.Name.ToLower().StartsWith("db"))                
                 {
-                    ExportTable.WinCCFlexDigitalAlarmsExportTableRow newRow = exportTable.NewWinCCFlexDigitalAlarmsExportTableRow();
+                    S7DataBlock lblk = (S7DataBlock)blk.BlockContents;
+                    ExportTable.AllBlocksExportTableRow newRow = exportTable.NewAllBlocksExportTableRow();
 
-                    // Alarm type,Alarm number,Alarm class,Trigger tag,Trigger bit number,Acknowledgment HMI tag,Acknowledgment HMI tag bit number,Acknowledgment PLC tag,Acknowledgment PLC tag bit number,Alarm group,Reported,Text[en-US],Field info[01],Infotext[en-US]
-                    // D,8,Alarms,dbErrors,8,,,,,,0,en-US= Global Sheeting E-Stop button #01 (HW reset required),,en-US= Global Sheeting E-Stop button #01 (HW reset required)
+                    newRow.Number = blk.Name;
+                    newRow.Name = blk.SymbolicName;
+                    newRow.Path = blk.BlockContents.ParentFolder + "\\" + blk.Name;
+                    newRow.Type = "DB";
+                    newRow.Language = "STL";
+                    newRow.Comment = lblk.Title;
+                    newRow.Size = blk.Size;
+                    newRow.Version = lblk.Version;
+                    newRow.LastModified = blk.Modified;
+                    
+                } else if (blk.Name.ToLower().StartsWith("fb") || 
+                    blk.Name.ToLower().StartsWith("fc") || 
+                    blk.Name.ToLower().StartsWith("ob") || 
+                    blk.Name.ToLower().StartsWith("sfb") || 
+                    blk.Name.ToLower().StartsWith("sfc"))
+                {
+                    S7FunctionBlock lblk = (S7FunctionBlock)blk.BlockContents;
+                    ExportTable.AllBlocksExportTableRow newRow = exportTable.NewAllBlocksExportTableRow();
 
-                    switch (child.DataType)
-                    {
-                        case S7DataRowType.BOOL:
-                            newRow.AlarmType = "\"" + "D" + "\"";
-
-                            // Calculate trigger bit/alarm number
-                            int iWinCC_BitNumber;
-                            if (child.BlockAddress.ByteAddress % 2 == 0)
-                            {
-                                iWinCC_BitNumber = (child.BlockAddress.ByteAddress + 1) * 8 + child.BlockAddress.BitAddress;
-                            }
-                            else
-                            {
-                                iWinCC_BitNumber = (child.BlockAddress.ByteAddress - 1) * 8 + child.BlockAddress.BitAddress;
-                            }
-                            newRow.TriggerBitNumber = "\"" + iWinCC_BitNumber.ToString() + "\"";
-                            newRow.AlarmNumber = "\"" + iWinCC_BitNumber.ToString() + "\"";
-
-                            newRow.AlarmClass = "\"" + "Alarms" + "\"";
-                            newRow.TriggerTag = "\"" + CurrentBlock.Value.SymbolicName;
-
-                            newRow.Text = "\"" + "en-US=" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";  // Message text
-                            newRow.Infotext = "\"" + "en-US=" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";
-
-                            exportTable.AddWinCCFlexDigitalAlarmsExportTableRow(newRow);
-                            break;
-                        case S7DataRowType.UDT:
-                        case S7DataRowType.STRUCT:
-                            AddChildrenWinCCFlexDigitalAlarmsExportTable(exportTable, child.Children, strCommentPath.Trim() + " " + child.Comment.Trim());
-                            break;
-                        default:
-                            break;
-                    }
+                    newRow.Number = blk.Name;
+                    newRow.Name = blk.SymbolicName;
+                    newRow.Path = blk.BlockContents.ParentFolder + "\\" + blk.Name;
+                    newRow.Type = lblk.BlockType.ToString();
+                    newRow.Language = lblk.BlockLanguage.ToString();
+                    newRow.Comment = lblk.Title + "\n" + lblk.Description;
+                    newRow.Size = blk.Size;
+                    newRow.Version = lblk.Version;
+                    newRow.LastModified = blk.Modified;
                 }
             }
         }
