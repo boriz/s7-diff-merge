@@ -379,62 +379,70 @@ namespace S7_DMCToolbox
         private void CreateExportAllBlocksCSVFromDataTable(ExportTable.AllBlocksExportTableDataTable exportTable)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(@"Test");
 
-            //sb.AppendLine(@"//Alarm type,Alarm number,Alarm class,Trigger tag,Trigger bit number,Acknowledgment HMI tag,Acknowledgment HMI tag bit number,Acknowledgment PLC tag,Acknowledgment PLC tag bit number,Alarm group,Reported,Text[en-US],Field info[01],Infotext[en-US]");            
             IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().
                                               Select(column => column.ColumnName.Replace("_", " "));
-            sb.AppendLine(@"Space");
+            sb.AppendLine(string.Join(";", columnNames));
 
             // Append all rows
             foreach (DataRow row in exportTable.Rows)
             {
                 IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
-                sb.AppendLine(string.Join(",", fields));
+                sb.AppendLine(string.Join(";", fields));
             }
 
-
+            byte[] bom = new byte[3];
+            bom[0] = 0xEF;
+            bom[1] = 0xBB;
+            bom[2] = 0xBF;
+            File.WriteAllBytes(AllBlocksExportFilePath, bom);
             File.WriteAllText(AllBlocksExportFilePath, sb.ToString());
         }
 
         private void AddChildrenExportAllBlocksExportTable(ExportTable.AllBlocksExportTableDataTable exportTable, Dictionary<String, Block> AllBlocks)
         {
-            foreach (Block blk in AllBlocks.Values)
+            foreach (string key in AllBlocks.Keys)
             {
+                Block blk = AllBlocks[key];
                 // Fill block parameters
                 if (blk.Name.ToLower().StartsWith("db"))                
                 {
                     S7DataBlock lblk = (S7DataBlock)blk.BlockContents;
                     ExportTable.AllBlocksExportTableRow newRow = exportTable.NewAllBlocksExportTableRow();
 
-                    newRow.Number = blk.Name;
-                    newRow.Name = blk.SymbolicName;
-                    newRow.Path = blk.BlockContents.ParentFolder + "\\" + blk.Name;
-                    newRow.Type = "DB";
-                    newRow.Language = "STL";
-                    newRow.Comment = lblk.Title;
+                    newRow.Number = "\"" + blk.Name + "\"";
+                    newRow.Name = "\"" + blk.SymbolicName + "\"";
+                    newRow.Path = "\"" + key + "\"";
+                    newRow.Type = "\"" + "DB" + "\"";
+                    newRow.Language = "\"" + "STL" + "\"";
+                    newRow.Comment = "\"" + lblk.Title + "\"";
                     newRow.Size = blk.Size;
-                    newRow.Version = lblk.Version;
+                    newRow.Version = "\"" + lblk.Version + "\"";
                     newRow.LastModified = blk.Modified;
-                    
-                } else if (blk.Name.ToLower().StartsWith("fb") || 
-                    blk.Name.ToLower().StartsWith("fc") || 
-                    blk.Name.ToLower().StartsWith("ob") || 
-                    blk.Name.ToLower().StartsWith("sfb") || 
-                    blk.Name.ToLower().StartsWith("sfc"))
+                    exportTable.AddAllBlocksExportTableRow(newRow);                    
+                } 
+                else if ( blk.Name.ToLower().StartsWith("fb") || blk.Name.ToLower().StartsWith("fc") || blk.Name.ToLower().StartsWith("ob") )
                 {
                     S7FunctionBlock lblk = (S7FunctionBlock)blk.BlockContents;
                     ExportTable.AllBlocksExportTableRow newRow = exportTable.NewAllBlocksExportTableRow();
 
-                    newRow.Number = blk.Name;
-                    newRow.Name = blk.SymbolicName;
-                    newRow.Path = blk.BlockContents.ParentFolder + "\\" + blk.Name;
-                    newRow.Type = lblk.BlockType.ToString();
-                    newRow.Language = lblk.BlockLanguage.ToString();
-                    newRow.Comment = lblk.Title + "\n" + lblk.Description;
+                    newRow.Number = "\"" + blk.Name + "\"";
+                    newRow.Name = "\"" + blk.SymbolicName + "\"";
+                    newRow.Path = "\"" + key + "\"";
+                    newRow.Type = "\"" + lblk.BlockType.ToString() + "\"";
+                    newRow.Language = "\"" + lblk.BlockLanguage.ToString() + "\"";
+                    if (lblk.Description != null && lblk.Description != "")
+                    {
+                        newRow.Comment = "\"" + lblk.Title + "\n" + lblk.Description.Replace("\r\n", "\n") + "\"";
+                    }
+                    else
+                    {
+                        newRow.Comment = "\"" + lblk.Title + "\"";
+                    }                    
                     newRow.Size = blk.Size;
-                    newRow.Version = lblk.Version;
+                    newRow.Version = "\"" + lblk.Version + "\"";
                     newRow.LastModified = blk.Modified;
+                    exportTable.AddAllBlocksExportTableRow(newRow);
                 }
             }
         }
