@@ -2757,11 +2757,11 @@ namespace S7_DMCToolbox.Model {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class AllBlocksExportTableDataTable : global::System.Data.TypedTableBase<AllBlocksExportTableRow> {
             
+            private global::System.Data.DataColumn columnPath;
+            
             private global::System.Data.DataColumn columnNumber;
             
             private global::System.Data.DataColumn columnName;
-            
-            private global::System.Data.DataColumn columnPath;
             
             private global::System.Data.DataColumn columnType;
             
@@ -2810,6 +2810,14 @@ namespace S7_DMCToolbox.Model {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PathColumn {
+                get {
+                    return this.columnPath;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn NumberColumn {
                 get {
                     return this.columnNumber;
@@ -2821,14 +2829,6 @@ namespace S7_DMCToolbox.Model {
             public global::System.Data.DataColumn NameColumn {
                 get {
                     return this.columnName;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn PathColumn {
-                get {
-                    return this.columnPath;
                 }
             }
             
@@ -2917,12 +2917,12 @@ namespace S7_DMCToolbox.Model {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public AllBlocksExportTableRow AddAllBlocksExportTableRow(string Number, string Name, string Path, string Type, string Language, string Comment, int Size, string Version, System.DateTime LastModified) {
+            public AllBlocksExportTableRow AddAllBlocksExportTableRow(string Path, string Number, string Name, string Type, string Language, string Comment, string Size, string Version, string LastModified) {
                 AllBlocksExportTableRow rowAllBlocksExportTableRow = ((AllBlocksExportTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        Path,
                         Number,
                         Name,
-                        Path,
                         Type,
                         Language,
                         Comment,
@@ -2951,9 +2951,9 @@ namespace S7_DMCToolbox.Model {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnPath = base.Columns["Path"];
                 this.columnNumber = base.Columns["Number"];
                 this.columnName = base.Columns["Name"];
-                this.columnPath = base.Columns["Path"];
                 this.columnType = base.Columns["Type"];
                 this.columnLanguage = base.Columns["Language"];
                 this.columnComment = base.Columns["Comment"];
@@ -2965,26 +2965,25 @@ namespace S7_DMCToolbox.Model {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnPath = new global::System.Data.DataColumn("Path", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPath);
                 this.columnNumber = new global::System.Data.DataColumn("Number", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumber);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
-                this.columnPath = new global::System.Data.DataColumn("Path", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnPath);
                 this.columnType = new global::System.Data.DataColumn("Type", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnType);
                 this.columnLanguage = new global::System.Data.DataColumn("Language", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLanguage);
                 this.columnComment = new global::System.Data.DataColumn("Comment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnComment);
-                this.columnSize = new global::System.Data.DataColumn("Size", typeof(int), null, global::System.Data.MappingType.Element);
+                this.columnSize = new global::System.Data.DataColumn("Size", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSize);
                 this.columnVersion = new global::System.Data.DataColumn("Version", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVersion);
-                this.columnLastModified = new global::System.Data.DataColumn("LastModified", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnLastModified = new global::System.Data.DataColumn("LastModified", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLastModified);
                 this.columnNumber.Caption = "LocationPath";
-                this.columnPath.Caption = "Description";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6205,6 +6204,22 @@ namespace S7_DMCToolbox.Model {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Path {
+                get {
+                    try {
+                        return ((string)(this[this.tableAllBlocksExportTable.PathColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Path\' in table \'AllBlocksExportTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAllBlocksExportTable.PathColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Number {
                 get {
                     try {
@@ -6232,22 +6247,6 @@ namespace S7_DMCToolbox.Model {
                 }
                 set {
                     this[this.tableAllBlocksExportTable.NameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Path {
-                get {
-                    try {
-                        return ((string)(this[this.tableAllBlocksExportTable.PathColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Path\' in table \'AllBlocksExportTable\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableAllBlocksExportTable.PathColumn] = value;
                 }
             }
             
@@ -6301,10 +6300,10 @@ namespace S7_DMCToolbox.Model {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Size {
+            public string Size {
                 get {
                     try {
-                        return ((int)(this[this.tableAllBlocksExportTable.SizeColumn]));
+                        return ((string)(this[this.tableAllBlocksExportTable.SizeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Size\' in table \'AllBlocksExportTable\' is DBNull.", e);
@@ -6333,10 +6332,10 @@ namespace S7_DMCToolbox.Model {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime LastModified {
+            public string LastModified {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableAllBlocksExportTable.LastModifiedColumn]));
+                        return ((string)(this[this.tableAllBlocksExportTable.LastModifiedColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'LastModified\' in table \'AllBlocksExportTable\' is DBNull.", e);
@@ -6345,6 +6344,18 @@ namespace S7_DMCToolbox.Model {
                 set {
                     this[this.tableAllBlocksExportTable.LastModifiedColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPathNull() {
+                return this.IsNull(this.tableAllBlocksExportTable.PathColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPathNull() {
+                this[this.tableAllBlocksExportTable.PathColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6369,18 +6380,6 @@ namespace S7_DMCToolbox.Model {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNameNull() {
                 this[this.tableAllBlocksExportTable.NameColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsPathNull() {
-                return this.IsNull(this.tableAllBlocksExportTable.PathColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetPathNull() {
-                this[this.tableAllBlocksExportTable.PathColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
