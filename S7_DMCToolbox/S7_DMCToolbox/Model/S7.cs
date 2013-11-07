@@ -169,10 +169,20 @@ namespace S7_DMCToolbox
         #region Private Command Implementations
         internal void GetBlocksAsync()
         {
+            Project proj = null;
+            try
+            {
+                proj = Projects.LoadProject(_ProjectPath, false);
+            }
+            catch (Exception ex)
+            {
+                // TODO: HAndle exception gracefully
+                proj = null;
+            }
 
-            Project proj = Projects.LoadProject(_ProjectPath, false);
             if (proj == null) //project not found
                 return;
+
             List<ProjectBlockInfo> allBlockInfo = GetBlocksFromProject(proj.ProjectStructure.SubItems);
             Dictionary<String, Block> myBlocks = new Dictionary<String, Block>();
 
@@ -382,13 +392,14 @@ namespace S7_DMCToolbox
 
             IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().
                                               Select(column => column.ColumnName.Replace("_", " "));
-            sb.AppendLine(string.Join(";", columnNames));
+            sb.AppendLine(string.Join("\t", columnNames));
 
             // Append all rows
-            foreach (DataRow row in exportTable.Rows)
+            var rows = from ds in exportTable orderby ds.Path select ds;
+            foreach (var row in rows)
             {
                 IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
-                sb.AppendLine(string.Join(";", fields));
+                sb.AppendLine(string.Join("\t", fields));
             }
 
             byte[] bom = new byte[3];
@@ -415,10 +426,26 @@ namespace S7_DMCToolbox
                     newRow.Path = "\"" + key + "\"";
                     newRow.Type = "\"" + "DB" + "\"";
                     newRow.Language = "\"" + "STL" + "\"";
-                    newRow.Comment = "\"" + lblk.Title + "\"";
-                    newRow.Size = blk.Size;
-                    newRow.Version = "\"" + lblk.Version + "\"";
-                    newRow.LastModified = blk.Modified;
+
+                    newRow.Comment = "\"";
+                    if (lblk.Title != null && lblk.Title != "")
+                    {
+                        newRow.Comment = "\"" + ClearString(lblk.Title) + "\"";
+                    }
+                    newRow.Comment = newRow.Comment + "\"";
+
+                    newRow.Size = "\"" + blk.Size.ToString() + "\"";
+
+                    if (lblk.Version != null)
+                    {
+                        newRow.Version = "\"" + lblk.Version + "\"";
+                    }
+                    else
+                    {
+                        newRow.Version = "\"0.0\"";
+                    }
+
+                    newRow.LastModified = "\"" + blk.Modified.ToString("yyyy-MM-dd HH:mm:ss") + "\"";
                     exportTable.AddAllBlocksExportTableRow(newRow);                    
                 } 
                 else if ( blk.Name.ToLower().StartsWith("fb") || blk.Name.ToLower().StartsWith("fc") || blk.Name.ToLower().StartsWith("ob") )
@@ -431,22 +458,49 @@ namespace S7_DMCToolbox
                     newRow.Path = "\"" + key + "\"";
                     newRow.Type = "\"" + lblk.BlockType.ToString() + "\"";
                     newRow.Language = "\"" + lblk.BlockLanguage.ToString() + "\"";
+
+                    newRow.Comment = "\"";
+                    if (lblk.Title != null && lblk.Title != "")
+                    {
+                        newRow.Comment = newRow.Comment + ClearString(lblk.Title);
+                    }
                     if (lblk.Description != null && lblk.Description != "")
                     {
-                        newRow.Comment = "\"" + lblk.Title + "\n" + lblk.Description.Replace("\r\n", "\n") + "\"";
+                        newRow.Comment = newRow.Comment + ". " + ClearString(lblk.Description);
+                    }
+                    newRow.Comment = newRow.Comment + "\"";
+
+                    newRow.Size = "\"" + blk.Size + "\"";
+
+                    if (lblk.Version != null)
+                    {
+                        newRow.Version = "\"" + lblk.Version + "\"";
                     }
                     else
                     {
-                        newRow.Comment = "\"" + lblk.Title + "\"";
-                    }                    
-                    newRow.Size = blk.Size;
-                    newRow.Version = "\"" + lblk.Version + "\"";
-                    newRow.LastModified = blk.Modified;
+                        newRow.Version = "\"0.0\"";
+                    }
+
+                    newRow.LastModified = "\"" + blk.Modified.ToString("yyyy-MM-dd HH:mm:ss") + "\"";
                     exportTable.AddAllBlocksExportTableRow(newRow);
                 }
             }
         }
 
+
+        private string ClearString(string str)
+        {
+            string ret = str.Replace("\r", "").Replace("\n", "").Replace("\t", "").Replace("\"", "").Replace(@"//", "");
+            Regex reg;
+
+            reg = new Regex(@"\-+");
+            ret = reg.Replace(ret, "-");
+
+            reg = new Regex(@"\*+");
+            ret = reg.Replace(ret, "*");
+
+            return ret;
+        }
 
         #endregion
 
