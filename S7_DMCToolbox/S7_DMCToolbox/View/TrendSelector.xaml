@@ -98,7 +98,6 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="35" Header="Add"/>
                 <DataGridTextColumn Width="100" Header="Address" Binding="{Binding Value.Address}"/>
                 <DataGridTextColumn Width="1.5*" Header="Tag" Binding="{Binding Value.Name}"/>
             </DataGrid.Columns>
@@ -143,19 +142,25 @@
                 <DataGridTextColumn Width="0.25*" Header="Delete" />
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="0,0,0,185">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <DockPanel Grid.Row="2" Grid.Column="0" Margin="5">
-                <Label  VerticalAlignment="Top" HorizontalAlignment="Right">Sampling Interval (ms)</Label>
-                <TextBox Width="50" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-            </DockPanel>
-        </Grid>
+        
+        <DockPanel Grid.Row="2" Grid.Column="0" Margin="5" >
+            
+            <Grid Height="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">IP Address</Label>
+                <TextBox Grid.Row="0" Width="150" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding IpAddress}" />
+                <Label  Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">Sampling Interval (ms)</Label>
+                <TextBox Grid.Row="1" Width="50" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            </Grid>
+            
+            
+        </DockPanel>
         <DockPanel Grid.Row="2" Grid.Column="1">
             <Button Width="70" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="5" IsCancel="True">Close</Button>
-            <Button Width="70" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="5" IsCancel="True" Command="{Binding ExportAlarmWorxCmd}" >Start Trend</Button>
+            <Button Width="70" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="5" IsCancel="True" Command="{Binding StartNewTrendCmd}" >Start Trend</Button>
         </DockPanel>
     </Grid>
 </Window>

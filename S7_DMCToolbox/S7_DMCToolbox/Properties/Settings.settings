@@ -44,5 +44,11 @@
     <Setting Name="WinCCFlexDigitalAlarmsExportFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="AllBlocksExportFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="IpAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.5.200</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -12,10 +12,12 @@ using Ookii.Dialogs.Wpf;
 using System.Windows.Data;
 using Ionic.Zip;
 using S7_DMCToolbox.Model;
+using Trending;
+
 
 namespace S7_DMCToolbox
 {
-    class S7_ViewModel : NotifyPropertyChangedBase
+    class S7_ViewModel : DMCBase.NotifyPropertyChangedBase
     {
         #region Model instance
 
@@ -375,6 +377,18 @@ namespace S7_DMCToolbox
                 }
             }
         }
+        public String IpAddress
+        {
+            get
+            {
+                return Properties.Settings.Default.AllBlocksExportFilePath;
+            }
+            set
+            {
+                Properties.Settings.Default.AllBlocksExportFilePath = value;
+                Properties.Settings.Default.Save();
+            }
+        }
         #endregion
 
         #region Commands
@@ -450,7 +464,23 @@ namespace S7_DMCToolbox
             {
                 return new RelayCommand(p => AddTrendTag(), z => !S7Model.IsBusy);
             }
+        }
+        public ICommand StartNewTrendCmd
+        {
+            get
+            {
+                return new RelayCommand(p => StartNewTrend(), z => !S7Model.IsBusy);
+            }
+        }
 
+        private void StartNewTrend()
+        {
+            Trending.Model TrendModel = Trending.Model.Instance;
+            TrendModel.NewDevice(IpAddress, 0, 2);
+            TrendModel.ConnectedDevice = new ProfinetModel();
+            ProfinetModel PLC = TrendModel.ConnectedDevice as ProfinetModel;
+            PLC.AddTags(dicTrendTags);
+            
         }
 
         private void AddTrendTag()

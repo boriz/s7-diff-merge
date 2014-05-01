@@ -1,4 +1,5 @@
-﻿using System;
+﻿using S7_DMCToolbox;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -6,11 +7,10 @@ using System.Linq;
 using System.Text;
 //using System.Windows.Forms;
 using System.Windows.Threading;
-using Windows_Trend_View.Properties;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
-namespace Windows_Trend_View
+namespace Trending
 {
 
     public class ProfinetModel : Device
@@ -21,14 +21,7 @@ namespace Windows_Trend_View
         private readonly bool[] _newData = new bool[4];
         private readonly bool[] _logPending = new bool[4];
 
-        public List<TrendTagParameters> TagParameters { get; set; }
-
-        public List<ActualData> ActualValues { get; set; }
         public List<TagData> TagSamples { get; set; }
-
-        //Dont need these 
-        public List<long> AnalogValues { get; set; }
-
 
         public ProfinetModel()
         {
@@ -36,13 +29,22 @@ namespace Windows_Trend_View
         }
 
         //Adds a new tag
-        public void AddNewTag()
+        //public void AddNewTag()
+        //{
+        //    TagSamples.Add(new TagData());
+        //    TagParameters.Add(new TrendTagParameters(TagParameters.Count + 1));
+        //    TagParameters.Last().ParameterChangedEvent += OnParameterChanged;
+        //    TagParameters.Last().LocalParameterChangedEvent += OnLocalParameterChanged;
+        //    ActualValues.Add(new ActualData() {Current = "0.0000", Max = "0.0000", Min = "0.0000"});
+        //}
+
+        public void AddTags(Dictionary<String, Tag> Tags)
         {
-            TagSamples.Add(new TagData());
-            TagParameters.Add(new TrendTagParameters(TagParameters.Count + 1));
-            TagParameters.Last().ParameterChangedEvent += OnParameterChanged;
-            TagParameters.Last().LocalParameterChangedEvent += OnLocalParameterChanged;
-            ActualValues.Add(new ActualData() {Current = "0.0000", Max = "0.0000", Min = "0.0000"});
+            foreach (KeyValuePair<String, Tag> Tag in Tags)
+            {
+                TagSamples.Add(new TagData() { TagInfo = Tag.Value, Data = new ObservableCollection<DataSample>() });
+            }
+
         }
 
         private void BuildDictionaries()
@@ -52,18 +54,6 @@ namespace Windows_Trend_View
 
             };
 
-            TagParameters = new List<TrendTagParameters>()
-            {
-
-            };
-
-
-            ActualValues = new List<ActualData>()
-            {
-
-            };
-
-            AnalogValues = new List<long>() {0, 0, 0, 0};
         }
 
         public void NotifyMeasurementChanged()
@@ -75,37 +65,25 @@ namespace Windows_Trend_View
         {
 
             // Update the readings for the enabled tags.
-            foreach (var tag in TagParameters.Where(p => p.TagEnabledParm.Value))
+            foreach (var tag in TagSamples.Where(p => p.TagInfo.Enabled))
             {
                 //Keep the length 4 bytes for now so it grabs every data type.
-                _model.ReadBytes(tag.AreaTypeParameter.Value, tag.DbNumberParameter.Value,
-                    tag.BaseAddressParameter.Value, 4);
+                byte[] Results = _model.ReadBytes(tag.TagInfo.AreaTypeParameter, tag.TagInfo.DbNumber,
+                    tag.TagInfo.ByteOffset, 4);
                 //Store it into the tagData
-                //               var tagData = _model.ReceiveLine();
+                //var tagData = _model.ReceiveLine();
                // ParseDataPacket(ref TagSamples[tag.Tag - 1]);
-                var reading = ActualValues[tag.Tag - 1].Current;
-                var units = TagParameters[tag.Tag - 1].DisplayUnitsParameter.Value.ToString();
-                var time = DateTime.Now;
-                AddNewSample(reading, time, tag.Tag - 1);
-                _model.LogReading(reading, units, time, tag.Tag);
-                TagParameters[tag.Tag - 1].FireLogEvent();
-                _logPending[tag.Tag - 1] = false;
+                //var reading = ActualValues[tag.Tag - 1].Current;
+                //var units = TagParameters[tag.Tag - 1].DisplayUnitsParameter.Value.ToString();
+                //var time = DateTime.Now;
+                //AddNewSample(reading, time, tag.Tag - 1);
+                //_model.LogReading(reading, units, time, tag.Tag);
+                //TagParameters[tag.Tag - 1].FireLogEvent();
+                //_logPending[tag.Tag - 1] = false;
             }
             NotifyMeasurementChanged();
 
 
-            // Handle Auto Logging
-            foreach (var tag in TagParameters.Where(p => p.TagEnabledParm.Value &&
-                                                         p.AutomaticLogParameter.Value))
-            {
-                if (_lastLogTimes[tag.Tag - 1] +
-                    TimeSpan.FromSeconds((float) tag.LogIntervalParameter.Value) < DateTime.Now)
-                {
-
-                    _logPending[tag.Tag - 1] = true;
-                    _lastLogTimes[tag.Tag - 1] = DateTime.Now;
-                }
-            }
         }
 
         //Adds a new sample to the data log. We can add it to the TagData.
