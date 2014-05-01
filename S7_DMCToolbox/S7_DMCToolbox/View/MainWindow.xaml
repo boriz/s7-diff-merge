@@ -84,8 +84,9 @@
                                 </Button>
                                 <Button DockPanel.Dock="Right" Content="AlarmWorx" Command="{Binding GetAlarmWorxInfoCmd}" Width="75" Margin="5" />
                                 <Button DockPanel.Dock="Right" Content="Kepware" Command="{Binding ExportKepwareCmd}" Width="75" Margin="5" />
-                                                                
-                                    <Viewbox Height="35" Width="35" >
+                                <Button DockPanel.Dock="Right" Content="Trending" Command="{Binding SetupTrendingCmd}" Width="75" Margin="5" />
+
+                                <Viewbox Height="35" Width="35" >
                                     <DMC.UI:ProgressWheel Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="5">
                                         <!--<DMC.UI:ProgressWheel.RenderTransform>
                                             <ScaleTransform ScaleX=".2" ScaleY=".2"></ScaleTransform>

@@ -29,6 +29,8 @@ namespace S7_DMCToolbox
         private Boolean _IsCanceling = false;
         private String _ProjectName;
         private Dictionary<String, Block> _AllBlocks;
+        private Dictionary<String, Tag> _AllTags;
+        private Dictionary<String, Tag> _TrendTags = new Dictionary<string,Tag>();
         private Boolean _IsBusy = false;
         private Int16 _ProgressBarCurrent;
         private Int16 _ProgressBarMax;
@@ -50,6 +52,7 @@ namespace S7_DMCToolbox
         }
        
         public KeyValuePair<String, Block> CurrentBlock { get; set; }
+        public KeyValuePair<String, Tag> CurrentTag { get; set; }
         public String ProjectPath
         {
             get
@@ -93,8 +96,38 @@ namespace S7_DMCToolbox
                 NotifyPropertyChanged("AllBlocks");
             }
         }
-
-      
+        public Dictionary<String,Tag> AllTags
+        {
+            get
+            {
+                if (_AllTags == null)
+                {
+                    _AllTags = new Dictionary<String, Tag>();
+                }
+                return _AllTags;
+            }
+            set
+            {
+                _AllTags = value;
+                NotifyPropertyChanged("AllTags");
+            }
+        }
+        public Dictionary<String, Tag> TrendTags
+        {
+            get
+            {
+                if (_TrendTags == null)
+                {
+                    _TrendTags = new Dictionary<String, Tag>();
+                }
+                return _TrendTags;
+            }
+            set
+            {
+                _TrendTags = value;
+                NotifyPropertyChanged("TrendTags");
+            }
+        }
         public Boolean IsBusy
         {
             get
@@ -163,10 +196,58 @@ namespace S7_DMCToolbox
  	        DoJob(new ThreadStart(GetBlocksAsync));
          //   NotifyPropertyChanged("Blocks");
         }
-     
+        internal void GetAllTags()
+        {
+            //GetBlocksAsync();
+            DoJob(new ThreadStart(GetAllTagsAsync));
+            //   NotifyPropertyChanged("Blocks");
+        }
+        internal void AddTrendTag()
+        {
+            //GetBlocksAsync();
+            DoJob(new ThreadStart(AddTrendTagAsync));
+            //   NotifyPropertyChanged("Blocks");
+        }
+        internal void AddTrendTagAsync()
+        {
+            if (!_TrendTags.Contains(CurrentTag))
+                _TrendTags.Add(CurrentTag.Key, CurrentTag.Value);
+            TrendTags = new Dictionary<string,Tag>(_TrendTags);
+            NotifyPropertyChanged("TrendTags");
+        }
         #endregion
 
         #region Private Command Implementations
+        internal void GetAllTagsAsync()
+        {
+            if (!(CurrentBlock.Value.Name.ToLower().StartsWith("db")))
+            {
+                return;
+            }
+
+            S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
+            ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
+
+            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, CurrentBlock.Value);
+            Dictionary<String, Tag> myTags = new Dictionary<string,Tag>();
+            foreach (ExportTable.KepwareExportTableRow Row in exportTable)
+            {
+                Regex LastNumberInString = new Regex("(\\d+)(?!.*\\d)");
+                Tag NewTag = new Tag() { Name = Row.Tag_Name, Type = Row.Data_Type };
+                String[] SplitAddress = Row.Address.Split('.');
+                if (SplitAddress.Length == 2)
+                    NewTag.BitOffset = 0;
+                else
+                    NewTag.BitOffset = int.Parse(LastNumberInString.Match(Row.Address).Value);
+
+                NewTag.ByteOffset = int.Parse(LastNumberInString.Match(Row.Address.Split('.')[1]).Value);
+                NewTag.ByteOffset = int.Parse(LastNumberInString.Match(Row.Address.Split('.')[0]).Value);
+                NewTag.Address = Row.Address;
+                myTags.Add(Row.Tag_Name, NewTag);
+
+            }
+            AllTags = myTags;
+        }
         internal void GetBlocksAsync()
         {
             Project proj = null;

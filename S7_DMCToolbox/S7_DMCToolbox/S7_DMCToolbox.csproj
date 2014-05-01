@@ -80,12 +80,18 @@
     <Reference Include="Ionic.Zip">
       <HintPath>.\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Ookii.Dialogs.Wpf">
       <HintPath>.\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -116,6 +122,7 @@
       <Link>DMC Library\RelayCommand.cs</Link>
     </Compile>
     <Compile Include="Model\Blocks.cs" />
+    <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\ExportTable.cs">
       <DependentUpon>ExportTable.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -131,6 +138,9 @@
       <DependentUpon>AlarmWorxEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ScrollSynchronizer.cs" />
+    <Compile Include="View\TrendSelector.xaml.cs">
+      <DependentUpon>TrendSelector.xaml</DependentUpon>
+    </Compile>
     <Page Include="..\..\DMC_Library\ProgressWheel.xaml">
       <Link>DMC Library\ProgressWheel.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
@@ -163,6 +173,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\TrendSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -194,6 +208,7 @@
     <None Include="Model\ExportTable.xss">
       <DependentUpon>ExportTable.xsd</DependentUpon>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
