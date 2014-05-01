@@ -133,6 +133,19 @@
       <DependentUpon>ExportTable.xsd</DependentUpon>
     </Compile>
     <Compile Include="SimilarityToColorConverter.cs" />
+    <Compile Include="Trending\Model\Data.cs" />
+    <Compile Include="Trending\Model\EnumComboItem.cs" />
+    <Compile Include="Trending\Model\EnumSources.cs" />
+    <Compile Include="Trending\Model\libnodave.net.cs" />
+    <Compile Include="Trending\Model\Model.cs" />
+    <Compile Include="Trending\Model\NotifyPropertyChangedBase.cs" />
+    <Compile Include="Trending\Model\Parameters.cs" />
+    <Compile Include="Trending\Model\PLCEngine.cs" />
+    <Compile Include="Trending\Model\PLCState.cs" />
+    <Compile Include="Trending\ParameterEnums.cs" />
+    <Compile Include="Trending\Profinet\ProfinetModel.cs" />
+    <Compile Include="Trending\Profinet\ProfinetViewModel.cs" />
+    <Compile Include="Trending\Profinet\TrendTagParameters.cs" />
     <Compile Include="ViewModel\Commands.cs" />
     <Compile Include="View\AlarmWorxEntry.xaml.cs">
       <DependentUpon>AlarmWorxEntry.xaml</DependentUpon>

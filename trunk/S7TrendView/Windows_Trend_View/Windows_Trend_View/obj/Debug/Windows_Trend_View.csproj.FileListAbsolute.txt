@@ -37,3 +37,16 @@ C:\projects\DMC\DMC.S7SourceControl.SVN\SiemensTrendDisplay\Windows_Trend_View\W
 C:\projects\DMC\DMC.S7SourceControl.SVN\SiemensTrendDisplay\Windows_Trend_View\Windows_Trend_View\bin\Debug\Windows_Trend_View.pdb
 C:\projects\DMC\DMC.S7SourceControl.SVN\SiemensTrendDisplay\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.exe
 C:\projects\DMC\DMC.S7SourceControl.SVN\SiemensTrendDisplay\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.pdb
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\bin\Debug\Windows_Trend_View.exe.config
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\bin\Debug\Windows_Trend_View.exe
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\bin\Debug\Windows_Trend_View.pdb
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.csprojResolveAssemblyReference.cache
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\MainWindow.baml
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\MainWindow.g.cs
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\App.g.cs
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View_MarkupCompile.cache
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.g.resources
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.Properties.Resources.resources
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.csproj.GenerateResource.Cache
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.exe
+D:\Projects\DMC\s7-diff-merge\S7TrendView\Windows_Trend_View\Windows_Trend_View\obj\Debug\Windows_Trend_View.pdb

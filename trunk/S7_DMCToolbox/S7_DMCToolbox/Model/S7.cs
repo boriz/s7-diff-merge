@@ -34,7 +34,7 @@ namespace S7_DMCToolbox
         private Boolean _IsBusy = false;
         private Int16 _ProgressBarCurrent;
         private Int16 _ProgressBarMax;
-        
+        private Dictionary<String, Tag> _Symbols;
         #endregion
 
         #region Public Properties
@@ -110,6 +110,22 @@ namespace S7_DMCToolbox
             {
                 _AllTags = value;
                 NotifyPropertyChanged("AllTags");
+            }
+        }
+        public Dictionary<String,Tag> Symbols
+        {
+            get
+            {
+                if (_Symbols == null)
+                {
+                    _Symbols = new Dictionary<String,Tag>();
+                }
+                return _Symbols;
+            }
+            set
+            {
+                _Symbols = value;
+                NotifyPropertyChanged("Symbols");
             }
         }
         public Dictionary<String, Tag> TrendTags
@@ -220,10 +236,16 @@ namespace S7_DMCToolbox
         #region Private Command Implementations
         internal void GetAllTagsAsync()
         {
-            if (!(CurrentBlock.Value.Name.ToLower().StartsWith("db")))
+            if (CurrentBlock.Value.Name.Equals("Symbols"))
+            {
+                AllTags = Symbols;
+                return;
+            }
+            else if (!(CurrentBlock.Value.Name.ToLower().StartsWith("db")))
             {
                 return;
             }
+            
 
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
             ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
@@ -233,7 +255,8 @@ namespace S7_DMCToolbox
             foreach (ExportTable.KepwareExportTableRow Row in exportTable)
             {
                 Regex LastNumberInString = new Regex("(\\d+)(?!.*\\d)");
-                Tag NewTag = new Tag() { Name = Row.Tag_Name, Type = Row.Data_Type };
+                Tag NewTag = new Tag() { Name = Row.Tag_Name, AreaTypeParameter = Trending.AREA_TYPE.DB};
+                
                 String[] SplitAddress = Row.Address.Split('.');
                 if (SplitAddress.Length == 2)
                     NewTag.BitOffset = 0;
@@ -241,7 +264,8 @@ namespace S7_DMCToolbox
                     NewTag.BitOffset = int.Parse(LastNumberInString.Match(Row.Address).Value);
 
                 NewTag.ByteOffset = int.Parse(LastNumberInString.Match(Row.Address.Split('.')[1]).Value);
-                NewTag.ByteOffset = int.Parse(LastNumberInString.Match(Row.Address.Split('.')[0]).Value);
+                NewTag.DbNumber = int.Parse(LastNumberInString.Match(Row.Address.Split('.')[0]).Value);
+                
                 NewTag.Address = Row.Address;
                 myTags.Add(Row.Tag_Name, NewTag);
 
@@ -263,9 +287,11 @@ namespace S7_DMCToolbox
 
             if (proj == null) //project not found
                 return;
-
+            
             List<ProjectBlockInfo> allBlockInfo = GetBlocksFromProject(proj.ProjectStructure.SubItems);
             Dictionary<String, Block> myBlocks = new Dictionary<String, Block>();
+            Symbols = GetSymbolTableFromProject(proj.ProjectStructure.SubItems);
+            myBlocks.Add("Symbols", new Block() {Name="Symbols", SymbolicName = "Symbols" });
 
             foreach (ProjectBlockInfo item in allBlockInfo)
             {
@@ -290,7 +316,7 @@ namespace S7_DMCToolbox
                     
                 }
             }
-
+            
             AllBlocks = myBlocks;
             NotifyPropertyChanged("AllBlocks");
         }
@@ -314,7 +340,73 @@ namespace S7_DMCToolbox
 
             return allBlocks;
         }
-      
+
+        private Dictionary<String,Tag> GetSymbolTableFromProject(List<ProjectFolder> folders)
+        {
+            //create new list
+            List<SymbolTableEntry> s = GetSymbolEntries(folders);
+            Dictionary<String,Tag> SymbolTable = new Dictionary<string,Tag>();
+
+            foreach (SymbolTableEntry sym in s)
+            {
+                Tag NewTag = new Tag();
+                NewTag.Name = sym.Symbol;
+                NewTag.Address = sym.Operand;
+                switch (sym.Operand.First())
+                {
+                    case 'I':
+                        NewTag.AreaTypeParameter = Trending.AREA_TYPE.IN;
+                        break;
+                    case 'M':
+                        NewTag.AreaTypeParameter = Trending.AREA_TYPE.MEMORY;
+                        break;
+                    case 'Q':
+                        NewTag.AreaTypeParameter = Trending.AREA_TYPE.OUT;
+                        break;
+                    default:
+                        NewTag.AreaTypeParameter = Trending.AREA_TYPE.DB;
+                        break;
+                }
+                Regex LastNumberInString = new Regex("(\\d+)(?!.*\\d)");
+               
+                String[] SplitAddress = sym.Operand.Split('.');
+                if (SplitAddress.Length == 1)
+                {
+                    NewTag.BitOffset = 0;
+                    NewTag.ByteOffset = int.Parse(LastNumberInString.Match(sym.Operand).Value);
+                }
+                else
+                {
+                    NewTag.BitOffset = int.Parse(LastNumberInString.Match(sym.Operand).Value);
+                    NewTag.ByteOffset = int.Parse(LastNumberInString.Match(sym.Operand.Split('.')[0]).Value);
+                }
+
+                SymbolTable.Add(sym.Symbol, NewTag);
+            }
+
+            return SymbolTable;
+            
+        }
+        private List<SymbolTableEntry> GetSymbolEntries(List<ProjectFolder> folders)
+        {
+            //create new list
+            List<SymbolTableEntry> s = new List<SymbolTableEntry>();
+
+            foreach (ProjectFolder fldr in folders)
+            {
+                if (fldr is ISymbolTable)
+                {
+                    s.AddRange(((SymbolTable)fldr).SymbolTableEntrys);
+                }
+                if ((fldr.SubItems != null) && (fldr.SubItems.Count > 0))
+                {
+                    s.AddRange(GetSymbolEntries(fldr.SubItems));
+                }
+
+            }
+            return s;
+        }
+
         #endregion
 
      

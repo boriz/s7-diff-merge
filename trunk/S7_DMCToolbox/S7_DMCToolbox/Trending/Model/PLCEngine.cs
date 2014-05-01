@@ -2,8 +2,10 @@
 using System.IO.Ports;
 using System.Diagnostics;
 using System.Windows;
+using S7_DMCToolbox;
+using System.Collections;
 
-namespace Windows_Trend_View
+namespace Trending
 {
     /// <summary>
     /// Class to communicate to PLC over Profinet or PROFIBUS
@@ -119,17 +121,43 @@ namespace Windows_Trend_View
         }
 
         //Read bytes from the PLC
-        public bool ReadBytes(AREA_TYPE Area, int dbNumber, int baseAddress, int Length)
+        public byte[] ReadBytes(AREA_TYPE Area, int dbNumber, int baseAddress, int Length)
         {
             int res;
-            res = PLCConnection.readBytes((int) Area, dbNumber, baseAddress, Length, null);
+            byte[] buffer = new byte[Length];
+            
+            res = PLCConnection.readBytes((int) Area, dbNumber, baseAddress, Length, buffer);
 
             if (res == 0)
             {
-                return true;
+                return buffer;
             }
-            else
-                return false;
+            throw new Exception("Unable to read data block DB " + dbNumber + ".");
+        }
+        public String ReadBytes(Tag Tag) 
+        {
+            int res;
+            byte[] buffer = new byte[4];
+
+            res = PLCConnection.readBytes((int)Tag.AreaTypeParameter, Tag.DbNumber, Tag.ByteOffset, 4, buffer);
+
+            if (res == 0)
+            {
+                switch (Tag.DataType)
+                {
+                    case DATA_TYPES.TYPE_BOOL:
+                        return (new BitArray(buffer[0])).Get(Tag.BitOffset).ToString();
+                        break;
+                    case DATA_TYPES.TYPE_FLOAT:
+                        return PLCConnection.getS32().ToString();
+                        break;
+                    case DATA_TYPES.TYPE_INT:
+                        return PLCConnection.getS32().ToString();
+                        break;
+
+                }
+            }
+            throw new Exception("Unable to read data block DB " + Tag.DbNumber + ".");
         }
     }
 }
