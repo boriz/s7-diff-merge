@@ -11,6 +11,7 @@ using System.IO;
 using Ookii.Dialogs.Wpf;
 using System.Windows.Data;
 using Ionic.Zip;
+using S7_DMCToolbox.Model;
 
 namespace S7_DMCToolbox
 {
@@ -41,6 +42,8 @@ namespace S7_DMCToolbox
         #region Private Variables
         private ObservableCollection<LogEvent> _LogModel;
         internal CollectionViewSource cvsBlocks { get; set; }
+        internal CollectionViewSource cvsAllTags { get; set; }
+        internal CollectionViewSource cvsTrendTags { get; set; }
         internal Dictionary<String, Block> dicBlocks
         {
             get
@@ -48,8 +51,20 @@ namespace S7_DMCToolbox
                 return S7Model.AllBlocks;
             }
         }
-        
-      
+        internal Dictionary<String, Tag> dicAllTags
+        {
+            get
+            {
+                return S7Model.AllTags;
+            }
+        }
+        internal Dictionary<String, Tag> dicTrendTags
+        {
+            get
+            {
+                return S7Model.TrendTags;
+            }
+        }
         private String _ProjectExtendedName = "";
         #endregion
 
@@ -130,6 +145,26 @@ namespace S7_DMCToolbox
                     return CollectionViewSource.GetDefaultView(dicBlocks);
                 cvsBlocks.Source = dicBlocks;
                 return cvsBlocks.View;
+            }
+        }
+        public ICollectionView AllTags
+        {
+            get
+            {
+                if (cvsAllTags == null)
+                    return CollectionViewSource.GetDefaultView(dicAllTags);
+                cvsAllTags.Source = dicAllTags;
+                return cvsAllTags.View;
+            }
+        }
+        public ICollectionView TrendTags
+        {
+            get
+            {
+                if (cvsTrendTags == null)
+                    return CollectionViewSource.GetDefaultView(dicTrendTags);
+                cvsAllTags.Source = dicTrendTags;
+                return cvsTrendTags.View;
             }
         }
         public Boolean IsBusy
@@ -326,7 +361,20 @@ namespace S7_DMCToolbox
                 }
             }
         }
-
+        public object SelectedTag
+        {
+            get
+            {
+                return S7Model.CurrentTag;
+            }
+            set
+            {
+                if (value is KeyValuePair<String, Tag>)
+                {
+                    S7Model.CurrentTag = (KeyValuePair<String, Tag>)value;
+                }
+            }
+        }
         #endregion
 
         #region Commands
@@ -381,6 +429,43 @@ namespace S7_DMCToolbox
             {
                 return new RelayCommand(p => ExportAllBlocks(), z => !S7Model.IsBusy);
             }
+        }
+        public ICommand GetBlockTagsCmd
+        {
+            get
+            {
+                return new RelayCommand(p => GetBlockTags(), z => !S7Model.IsBusy);
+            }
+        }
+        public ICommand SetupTrendingCmd
+        {
+            get
+            {
+                return new RelayCommand(p => SetupTrending(), z => !S7Model.IsBusy);
+            }
+        }
+        public ICommand AddTrendTagCmd
+        {
+            get
+            {
+                return new RelayCommand(p => AddTrendTag(), z => !S7Model.IsBusy);
+            }
+
+        }
+
+        private void AddTrendTag()
+        {
+            S7Model.AddTrendTag();
+        }
+        private void GetBlockTags()
+        {
+            S7Model.GetAllTags();
+        }
+        private void SetupTrending()
+        {
+            TrendSelector.TrendSelector modalWindow = new TrendSelector.TrendSelector();
+            modalWindow.DataContext = this;
+            modalWindow.ShowDialog();
         }
 
         private void ExportWinCCFlexDigitalAlarms()
