@@ -377,18 +377,36 @@ namespace S7_DMCToolbox
                 }
             }
         }
+
+        //Is this right?
         public String IpAddress
         {
             get
             {
-                return Properties.Settings.Default.AllBlocksExportFilePath;
+                return Properties.Settings.Default.IpAddress;
             }
             set
             {
-                Properties.Settings.Default.AllBlocksExportFilePath = value;
+                Properties.Settings.Default.IpAddress = value;
                 Properties.Settings.Default.Save();
             }
         }
+
+
+        public String TrendLogDirectory
+        {
+            get
+            {
+                return Properties.Settings.Default.TrendLogDirectory;
+            }
+            set
+            {
+                Properties.Settings.Default.TrendLogDirectory = value;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+
         #endregion
 
         #region Commands

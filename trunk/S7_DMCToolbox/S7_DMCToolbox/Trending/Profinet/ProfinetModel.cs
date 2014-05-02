@@ -68,16 +68,16 @@ namespace Trending
             foreach (var tag in TagSamples.Where(p => p.TagInfo.Enabled))
             {
                 //Keep the length 4 bytes for now so it grabs every data type.
-                byte[] Results = _model.ReadBytes(tag.TagInfo.AreaTypeParameter, tag.TagInfo.DbNumber,
-                    tag.TagInfo.ByteOffset, 4);
+                string Results = _model.ReadBytes(tag.TagInfo);
                 //Store it into the tagData
+                var time = DateTime.Now;
+                tag.Data.Add(new DataSample(){ActualValue = Results, Time = time});
                 //var tagData = _model.ReceiveLine();
                // ParseDataPacket(ref TagSamples[tag.Tag - 1]);
                 //var reading = ActualValues[tag.Tag - 1].Current;
                 //var units = TagParameters[tag.Tag - 1].DisplayUnitsParameter.Value.ToString();
-                //var time = DateTime.Now;
-                //AddNewSample(reading, time, tag.Tag - 1);
-                //_model.LogReading(reading, units, time, tag.Tag);
+                //AddNewSample(string, time, tag.Data - 1);
+                _model.LogTagData(tag.TagInfo, Results, time);
                 //TagParameters[tag.Tag - 1].FireLogEvent();
                 //_logPending[tag.Tag - 1] = false;
             }
@@ -138,9 +138,8 @@ namespace Trending
 
         public override void LoadLogFiles()
         {
-            //FUTURE USE
             //This method gets called when the directory changes or when a device connects.
-            //Search the current directory and load the files for channel 1,2,3 and 4 into ChannelSamples[0],[1],[2] and [3]
+            //Search the current directory and load the files
 //            var dir = new DirectoryInfo(Properties.Settings.Default.workingDirectory);
 //            try
 //            {

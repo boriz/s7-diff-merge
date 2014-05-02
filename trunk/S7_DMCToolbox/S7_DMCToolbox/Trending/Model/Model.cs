@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using S7_DMCToolbox;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Trending
@@ -258,27 +259,26 @@ namespace Trending
             }
         }
 
-        public void LogReading(string reading, string units, DateTime time, int channel)
+
+        public void LogTagData(Tag tag, string value, DateTime time)
         {
-            // try
+             try
             {
-                //      if (!Directory.Exists(Properties.Settings.Default.workingDirectory))
-                //          Directory.CreateDirectory(Properties.Settings.Default.workingDirectory);
-                //      var info =
-                //              time.ToString("yyyy-MM-dd hh:mm:ss.ff") + "," +
-                //             //DateTime.Now.ToString("hh:mm:ss") + "," +
-                //            reading + "," +
-                //           units + "\r\n";
-                //  File.AppendAllText(Properties.Settings.Default.workingDirectory + "Ch" + channel + ".csv", info);
-                //}
-                //catch (Exception ex)
-                // {
-                //    MessageBox.Show("Error Logging to File!\r\n\r\n" + ex.Message);
-                //   logger.ErrorException("Error Logging to File", ex);
-                // }
+                      if (!Directory.Exists(S7_DMCToolbox.Properties.Settings.Default.TrendLogDirectory))
+                          Directory.CreateDirectory(S7_DMCToolbox.Properties.Settings.Default.TrendLogDirectory);
+                      var info =
+                              time.ToString("yyyy-MM-dd hh:mm:ss.ff") + "," +
+                             //DateTime.Now.ToString("hh:mm:ss") + "," +
+                            tag.Name + "," + value + "\r\n";
+                  File.AppendAllText(S7_DMCToolbox.Properties.Settings.Default.TrendLogDirectory+ "Tag_" + tag.Name + ".csv", info);
+                }
+                catch (Exception ex)
+                 {
+                    MessageBox.Show("Error Logging to File!\r\n\r\n" + ex.Message);
+                   //logger.ErrorException("Error Logging to File", ex);
+                 }
             }
 
 
         }
     }
-}

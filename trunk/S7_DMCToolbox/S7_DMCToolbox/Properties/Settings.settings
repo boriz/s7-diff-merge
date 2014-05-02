@@ -50,5 +50,8 @@
     <Setting Name="IpAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.5.200</Value>
     </Setting>
+    <Setting Name="TrendLogDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C://Projects/DMC/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

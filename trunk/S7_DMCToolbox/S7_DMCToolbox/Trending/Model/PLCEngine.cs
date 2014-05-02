@@ -152,7 +152,7 @@ namespace Trending
                         return PLCConnection.getS32().ToString();
                         break;
                     case DATA_TYPES.TYPE_INT:
-                        return PLCConnection.getS32().ToString();
+                        return PLCConnection.getS16().ToString();
                         break;
 
                 }

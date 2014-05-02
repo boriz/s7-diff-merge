@@ -149,11 +149,14 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right">IP Address</Label>
                 <TextBox Grid.Row="0" Width="150" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding IpAddress}" />
                 <Label  Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right">Sampling Interval (ms)</Label>
                 <TextBox Grid.Row="1" Width="50" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <Label  Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right">Log Directory</Label>
+                <TextBox Grid.Row="2" Width="112" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Text="{Binding TrendLogDirectory}" />
             </Grid>
             
             
@@ -161,6 +164,8 @@
         <DockPanel Grid.Row="2" Grid.Column="1">
             <Button Width="70" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="5" IsCancel="True">Close</Button>
             <Button Width="70" Height="40" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="5" IsCancel="True" Command="{Binding StartNewTrendCmd}" >Start Trend</Button>
+            
         </DockPanel>
+        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="54" Margin="10.4,10.2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
