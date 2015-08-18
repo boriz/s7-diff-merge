@@ -18,6 +18,9 @@ using DotNetSiemensPLCToolBoxLibrary.Projectfiles;
 using System.Data;
 using DotNetSiemensPLCToolBoxLibrary.DataTypes.Blocks.Step7V5;
 using S7_DMCToolbox.Model;
+using DotNetSiemensPLCToolBoxLibrary.Source;
+using OfficeOpenXml;
+using System.Windows;
 
 
 namespace S7_DMCToolbox
@@ -35,6 +38,9 @@ namespace S7_DMCToolbox
         private Int16 _ProgressBarCurrent;
         private Int16 _ProgressBarMax;
         private Dictionary<String, Tag> _Symbols;
+        private string WinCCPortalDigitalAlarmsUDTFilePath;
+        private int currentExportId;
+        private bool _comfortSelected;
         #endregion
 
         #region Public Properties
@@ -78,6 +84,8 @@ namespace S7_DMCToolbox
         public string AlarmWorxExportFilePath { get; set; }
         public string KepwareExportFilePath { get; set; }
         public string WinCCFlexDigitalAlarmsExportFilePath { get; set; }
+        public string WinCCPortalDigitalAlarmsImportFilePath { get; set; }
+        public string WinCCPortalDigitalAlarmsExportFilePath { get; set; }
         public string AllBlocksExportFilePath { get; set; }
 
         public Dictionary<String, Block> AllBlocks
@@ -180,6 +188,7 @@ namespace S7_DMCToolbox
                 NotifyPropertyChanged("ProgressBarMax");
             }
         }
+
         #endregion
 
         #region Model Initialization and Unloading
@@ -380,8 +389,8 @@ namespace S7_DMCToolbox
                     NewTag.BitOffset = int.Parse(LastNumberInString.Match(sym.Operand).Value);
                     NewTag.ByteOffset = int.Parse(LastNumberInString.Match(sym.Operand.Split('.')[0]).Value);
                 }
-
-                SymbolTable.Add(sym.Symbol, NewTag);
+                if (!SymbolTable.ContainsKey(sym.Symbol))
+                    SymbolTable.Add(sym.Symbol, NewTag);
             }
 
             return SymbolTable;
@@ -684,6 +693,60 @@ namespace S7_DMCToolbox
             DoJob(new ThreadStart(ExportKepwareAsync));
         }
 
+        internal void ExportKepwareAllBlocks()
+        {
+            DoJob(new ThreadStart(ExportKepwareAllBlocksAsync));
+        }
+
+        internal void ExportKepwareAllBlocksAsync()
+        {
+
+            //this function is where the actual code is to export 1 block. Need to replace with exporting all global blocks to one CSV.
+          ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable(); //this is a table that holds every data block.
+          foreach(KeyValuePair<string,Block> db in AllBlocks) //so this is not looking for everything with "db" in it, but it's making a new array of blocks from a
+              //all it is doing is indexing a collection. in this case AllBlocks is a collection of KeyValuePairs. So it is not filtering anything by DB or FB or FC or anything. I ti is just indexing AllB
+              //indexing AllBlcoks and putting the contents one at a time into the variable "db"
+           {
+                if (!(db.Value.Name.ToLower().StartsWith("db"))) //check to make sure a data block is selected
+                    //Then here, we are checking the block to see if its ia DB or FB or FC. ok  If tit's not a DB, go to the next block. Sorry it's hard to type over remote haha ok and that's why you changed return to the continue. yes.
+                {
+                    continue; //this will skip the block in the for loop if it is not a datablock
+                }
+            
+           
+                S7DataBlock blk = (S7DataBlock)db.Value.BlockContents; //grab block contents
+                if (blk.IsInstanceDB)
+                {
+                    continue;
+                }
+                ExportTable.KepwareExportTableDataTable singleBlockTable = new ExportTable.KepwareExportTableDataTable(); //create new CSV table
+
+                AddChildrenToKepwareExportTable(singleBlockTable, blk.Structure.Children, db.Value.SymbolicName, db.Value); //get addresses for all items in data block
+
+                foreach (ExportTable.KepwareExportTableRow row in singleBlockTable.Rows) //add every row from this data block to our global table
+                {
+                    exportTable.Rows.Add(row.ItemArray);//.AddKepwareExportTableRow(row);
+                }
+            }
+          AddSymbolsToKepwareExportTable(exportTable);
+          CreateKepwareCSVFromDataTable(exportTable); //Export to CSV file  from our global table
+
+            //so it kinda looks like you could loop through all the blocks and add them all to exportTable, and then call the CreateKepwareCSVFromDataTable.
+            //I set up the basics so you now have a new button on the application that will link to whatever you put in this function.
+
+            //This code is just to create aa "list" of recently exported blocks for easier use next time. Is not relevent to our task of exporting all blocks:
+            //if (!Properties.Settings.Default.RecentlyUsedBlocks.Contains(CurrentBlock.Key))
+            //{
+            //    Properties.Settings.Default.RecentlyUsedBlocks.Insert(0, CurrentBlock.Key);
+            //    while (Properties.Settings.Default.RecentlyUsedBlocks.Count > 150)
+            //    {
+            //        Properties.Settings.Default.RecentlyUsedBlocks.RemoveAt(150);
+            //    }
+            //    Properties.Settings.Default.Save();
+            //}
+
+        }
+
         internal void ExportKepwareAsync()
         {
             if (!(CurrentBlock.Value.Name.ToLower().StartsWith("db")))
@@ -782,6 +845,11 @@ namespace S7_DMCToolbox
                             exportTable.AddKepwareExportTableRow(newRow);
 
                             break;
+                        
+                        case S7DataRowType.FB:
+                        case S7DataRowType.BLOCK_FB:
+                            AddChildrenToKepwareExportTable(exportTable, child.Children, newRow.Tag_Name, blk, ByteAdder);
+                            break;
                         case S7DataRowType.UDT:
                         case S7DataRowType.STRUCT:
                             AddChildrenToKepwareExportTable(exportTable, child.Children, newRow.Tag_Name, blk, ByteAdder);
@@ -851,6 +919,8 @@ namespace S7_DMCToolbox
 
                                 break;
                             case S7DataRowType.UDT:
+                            case S7DataRowType.FB:
+                            case S7DataRowType.BLOCK_FB:
                             case S7DataRowType.STRUCT:
                                 AddChildrenToKepwareExportTable(exportTable, child.Children, ParentPath + "." + child.Name + "[" + i + "]", blk, (i - child.ArrayStart.First()) * (child.ByteLength / (child.ArrayStop.First() - child.ArrayStart.First() + 1)) + ByteAdder);
                                 break;
@@ -861,6 +931,49 @@ namespace S7_DMCToolbox
             }
         }
 
+        private void AddSymbolsToKepwareExportTable(ExportTable.KepwareExportTableDataTable exportTable)
+        {
+            foreach (KeyValuePair<String, Tag> child in Symbols)
+            {
+                if (!child.Value.Address.StartsWith("M"))
+                    continue;
+
+                ExportTable.KepwareExportTableRow newRow = exportTable.NewKepwareExportTableRow();
+                newRow.Respect_Data_Type = "1";
+                newRow.Client_Access = "R/W";
+                newRow.Scan_Rate = "100";
+                newRow.Address = child.Value.Address;
+                newRow.Tag_Name = child.Key;
+                newRow.Description = child.Value.Name;
+                //newRow.Tag_Name = ParentPath + "." + child.Name;
+                //newRow.Description = child.Comment;
+                //int BitAddress = child.BlockAddress.BitAddress;
+                //int ByteAddress = child.BlockAddress.ByteAddress + ByteAdder;
+
+                switch (child.Value.Address.Substring(0, 2).ToUpper())
+                {
+                    case "M ":
+                        newRow.Data_Type = "Boolean";
+                        exportTable.AddKepwareExportTableRow(newRow);
+                        break;
+                    case "MB":
+                        newRow.Data_Type = "Byte";
+                        exportTable.AddKepwareExportTableRow(newRow);
+                        break;
+                    case "MD":
+                        newRow.Data_Type = "FLOAT";
+                        exportTable.AddKepwareExportTableRow(newRow);
+                        break;
+                    case "MW":
+                        newRow.Data_Type = "Short";
+                        exportTable.AddKepwareExportTableRow(newRow);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+        }
         internal void ExportAlarmWorx()
         {
             if (!Properties.Settings.Default.RecentOPCServers.Contains(SelectedOPCServer))
@@ -903,7 +1016,7 @@ namespace S7_DMCToolbox
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(@"#AWX_Source;");
             IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().
-                                              Select(column => column.ColumnName.Replace("_", " "));
+                                              Select(p => p.ColumnName);// => column.ColumnName.Replace("_", " "));
             sb.AppendLine(string.Join(",", columnNames));
 
             foreach (DataRow row in exportTable.Rows)
@@ -944,6 +1057,172 @@ namespace S7_DMCToolbox
                     }
                 }
             }
+        }
+
+        #endregion
+
+        #region WinCC Portal Alarms Export
+
+        internal void ExportWinCCPortalDigitalAlarms(bool comfortSelected)
+        {
+            _comfortSelected = comfortSelected;
+            DoJob(new ThreadStart(ExportWinCCPortalAlarmsAsync));
+        }
+
+        internal void ExportWinCCPortalAlarmsAsync()
+        {
+            if (!File.Exists(WinCCPortalDigitalAlarmsImportFilePath))
+            {
+                return;
+            }
+
+            ExportTable.WinCCPortalDigitalAlarmsExportTableDataTable exportTable = new ExportTable.WinCCPortalDigitalAlarmsExportTableDataTable();
+
+            var alarmDataBlocks = DbSourceParser.ParseDBSourceFile(WinCCPortalDigitalAlarmsImportFilePath);
+            currentExportId = 0;
+            foreach (S7DataBlock AlarmDataBlock in alarmDataBlocks.Values)
+            {
+                AddDataBlockWinCCPortalDigitalAlarmsExportTable(exportTable, AlarmDataBlock.Structure.Children, AlarmDataBlock.Name, new List<String>(), new List<String>());
+            }
+
+            WritePortalXLSXFromDataTable(WinCCPortalDigitalAlarmsExportFilePath, exportTable);
+
+
+        }
+
+        private void WritePortalXLSXFromDataTable(String excelPath, ExportTable.WinCCPortalDigitalAlarmsExportTableDataTable exportTable)
+        {
+            using (ExcelPackage ep = new ExcelPackage())
+            {
+                ep.Workbook.Worksheets.Add("DiscreteAlarms");
+
+                int col = 1;
+                int row = 1;
+
+                IEnumerable<string> columnNames = exportTable.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+
+                foreach (String column in columnNames)
+                {
+                    ep.Workbook.Worksheets[1].Cells[row, col].Value = column;
+                    col++;
+                }
+                foreach (DataRow tableRow in exportTable.Rows)
+                {
+                    row++;
+                    col = 1;
+                    foreach (object tableColumn in tableRow.ItemArray)
+                    {
+                        ep.Workbook.Worksheets[1].Cells[row, col].Value = tableColumn.ToString();
+                        col++;
+                    }
+                }
+
+                Byte[] epByteArray = ep.GetAsByteArray();
+                try
+                {
+                    File.WriteAllBytes(excelPath, epByteArray);
+                }
+                catch
+                {
+                    MessageBox.Show("\"" + Path.GetFileName(excelPath) + "\" is already open or something.\n\rI couldn't make alarms like you wanted :(", "Uh oh...", MessageBoxButton.OK);
+                }
+
+            }
+
+        }
+
+        private void AddDataBlockWinCCPortalDigitalAlarmsExportTable(ExportTable.WinCCPortalDigitalAlarmsExportTableDataTable exportTable, List<S7DataRow> children, String datablockName, List<String> structNames, List<String> structComments)
+        {
+            foreach (S7DataRow child in children)
+            {
+
+                ExportTable.WinCCPortalDigitalAlarmsExportTableRow newRow = exportTable.NewWinCCPortalDigitalAlarmsExportTableRow();
+
+                switch (child.DataType)
+                {
+                    case S7DataRowType.BOOL:
+                        currentExportId++;
+                        newRow.ID = currentExportId.ToString();
+                        newRow.Name = "Discrete_alarm_" + currentExportId.ToString();
+
+                        newRow.Class = "Errors";
+                        newRow._FieldInfo__Alarm_text_ = "";
+                        if (_comfortSelected)
+                        {
+                            newRow.Trigger_tag = "dbErrors";
+                            newRow.Trigger_bit = AddressToTriggerBit(child.BlockAddress.ByteAddress, child.BlockAddress.BitAddress);
+                        }
+                        else
+                        {
+                            String tag = datablockName + ".";
+                            foreach (String s in structNames) { tag = tag + s + "."; }
+                            tag = tag + child.Name;
+                            tag = "\"" + tag + "\"";
+
+                            newRow.Trigger_tag = tag;
+                            newRow.Trigger_bit = "0";
+                        }
+
+
+                        newRow.Acknowledgement_tag = "<No value>";
+                        newRow.Acknowledgement_bit = "0";
+
+                        newRow.PLC_Acknowledgement_tag = "<No value>";
+                        newRow.PLC_Acknowledgement_bit = "0";
+
+                        newRow.Group = "<No value>";
+                        newRow.Report = "False";
+
+                        if (structNames.Count > 0)
+                        {
+                            String comment = "";
+                            foreach (String s in structComments) { comment = comment + s + " - "; }
+                            newRow._Alarm_text__en_US___Alarm_text = comment + child.Comment;
+                            newRow._Info_text__en_US___Info_text = comment + child.Comment;
+                        }
+                        else
+                        {
+                            newRow._Alarm_text__en_US___Alarm_text = child.Comment;
+                            newRow._Info_text__en_US___Info_text = child.Comment;
+                        }
+
+                        exportTable.AddWinCCPortalDigitalAlarmsExportTableRow(newRow);
+                        break;
+                    case S7DataRowType.UDT:
+                    case S7DataRowType.STRUCT:
+                        structComments.Add(child.Comment);
+                        structNames.Add(child.Name);
+                        AddDataBlockWinCCPortalDigitalAlarmsExportTable(exportTable, child.Children, datablockName, structNames, structComments);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (structNames.Count > 0)
+            {
+                structNames.RemoveAt(structNames.Count - 1);
+            }
+            if (structComments.Count > 0)
+            {
+                structComments.RemoveAt(structComments.Count - 1);
+            }
+        }
+
+        private String AddressToTriggerBit(int byteAddress, int bitAddress)
+        {
+
+            int triggerBit;
+
+            if (byteAddress % 2 == 0)
+            {
+                triggerBit = (byteAddress + 1) * 8 + bitAddress;
+            }
+            else
+            {
+                triggerBit = (byteAddress - 1) * 8 + bitAddress;
+            }
+
+            return triggerBit.ToString();
         }
 
         #endregion

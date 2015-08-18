@@ -310,6 +310,33 @@ namespace S7_DMCToolbox
             }
         }
 
+        public Boolean managerPlatformSelected
+        {
+            get
+            {
+                return Properties.Settings.Default.managerPlatformSelected;
+            }
+            set
+            {
+                Properties.Settings.Default.managerPlatformSelected = value;
+                Properties.Settings.Default.Save();
+                NotifyPropertyChanged("managerPlatformSelected");
+            }
+        }
+
+        public Boolean portalPlatformSelected
+        {
+            get
+            {
+                return !managerPlatformSelected;
+            }
+            set
+            {
+                managerPlatformSelected = !value;
+                NotifyPropertyChanged("portalPlatformSelected");
+            }
+        }
+
         public String SelectedOPCServer
         {
             get
@@ -447,11 +474,35 @@ namespace S7_DMCToolbox
             }
         }
 
+        public ICommand ExportKepwareAllBlocksCmd
+        {
+            get
+            {
+                return new RelayCommand(p => ExportKepwareAllBlocks(), z => !S7Model.IsBusy);
+            }
+        }
+
         public ICommand ExportWinCCFlexDigitalAlarmsCmd
         {
             get
             {
                 return new RelayCommand(p => ExportWinCCFlexDigitalAlarms(), z => !S7Model.IsBusy);
+            }
+        }
+
+        public ICommand ExportWinCCComfortDigitalAlarmsCmd
+        {
+            get
+            {
+                return new RelayCommand(p => ExportWinCCComfort(), z => !S7Model.IsBusy);
+            }
+        }
+
+        public ICommand ExportWinCCProDigitalAlarmsCmd
+        {
+            get
+            {
+                return new RelayCommand(p => ExportWinCCProfessional(), z => !S7Model.IsBusy);
             }
         }
 
@@ -537,6 +588,52 @@ namespace S7_DMCToolbox
 
         }
 
+        private void ExportWinCCComfort()
+        {
+            ExportWinCCPortalDigitalAlarms(true);
+        }
+
+        private void ExportWinCCProfessional()
+        {
+            ExportWinCCPortalDigitalAlarms(false);
+        }
+
+        private void ExportWinCCPortalDigitalAlarms(bool comfortSelected)
+        {
+            VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
+            VistaOpenFileDialog openFileDialog = new VistaOpenFileDialog();
+
+            openFileDialog.Title = "Select DB Text File Location";
+            openFileDialog.AddExtension = true;
+            openFileDialog.DefaultExt = ".db";
+            openFileDialog.Filter = "DB File|*.db";
+            if (Directory.Exists(S7Model.WinCCPortalDigitalAlarmsImportFilePath))
+                openFileDialog.InitialDirectory = Properties.Settings.Default.WinCCPortalDigitalAlarmsImportFilePath;
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                S7Model.WinCCPortalDigitalAlarmsImportFilePath = openFileDialog.FileName;
+                Properties.Settings.Default.WinCCPortalDigitalAlarmsImportFilePath = openFileDialog.FileName;
+                Properties.Settings.Default.Save();
+            }
+
+            selectFileDialog.Title = "Select Export Location";
+            selectFileDialog.AddExtension = true;
+            selectFileDialog.DefaultExt = ".xlsx";
+            selectFileDialog.Filter = "Excel 2007 File|*.xlsx";
+            if (Directory.Exists(S7Model.WinCCPortalDigitalAlarmsExportFilePath))
+                selectFileDialog.InitialDirectory = Properties.Settings.Default.WinCCPortalDigitalAlarmsExportFilePath;
+
+            if ((bool)selectFileDialog.ShowDialog())
+            {
+                S7Model.WinCCPortalDigitalAlarmsExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.WinCCPortalDigitalAlarmsExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.Save();
+                S7Model.ExportWinCCPortalDigitalAlarms(comfortSelected);
+            }
+
+        }
+
         private void ExportKepware()
         {
             VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
@@ -556,6 +653,29 @@ namespace S7_DMCToolbox
                 S7Model.ExportKepware();
             }
             
+        }
+
+        private void ExportKepwareAllBlocks()
+        {
+            VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
+
+            selectFileDialog.Title = "Select Export Location";
+            selectFileDialog.AddExtension = true;
+            selectFileDialog.DefaultExt = ".csv";
+            selectFileDialog.Filter = "CSV File|*.csv";
+            if (Directory.Exists(S7Model.KepwareExportFilePath))
+                selectFileDialog.InitialDirectory = Properties.Settings.Default.KepwareExportFilePath;
+
+            if ((bool)selectFileDialog.ShowDialog())// == DialogResult.OK)
+            {
+                
+                S7Model.KepwareExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.KepwareExportFilePath = selectFileDialog.FileName;
+                Properties.Settings.Default.Save();
+                //S7Model.ExportKepware(); //place code here for exporting all blocks instead of selected block.
+                S7Model.ExportKepwareAllBlocks();
+            }
+
         }
 
         private void GetAlarmWorxInfo()

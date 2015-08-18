@@ -40,6 +40,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\externalDlls\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf">
+      <HintPath>..\..\S7_DMCToolbox\S7_DMCToolbox\Ookii.Dialogs.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Drawing" />
@@ -244,6 +247,8 @@
     <Compile Include="Projectfiles\Projects.cs" />
     <Compile Include="Projectfiles\Step7ProjectV11.cs" />
     <Compile Include="Source\AWLSourceParser.cs" />
+    <Compile Include="Source\DBSourceParser.cs" />
+    <Compile Include="Source\UDTSourceParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Communication\ConnectionEditor.en.resx">

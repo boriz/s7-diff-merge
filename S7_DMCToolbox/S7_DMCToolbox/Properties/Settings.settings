@@ -53,5 +53,14 @@
     <Setting Name="TrendLogDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">C://Projects/DMC/</Value>
     </Setting>
+    <Setting Name="managerPlatformSelected" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="WinCCPortalDigitalAlarmsImportFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WinCCPortalDigitalAlarmsExportFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

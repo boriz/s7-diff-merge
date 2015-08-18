@@ -65,10 +65,10 @@
     <ApplicationIcon>DMC Siemens Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>E6979D5A417AFC1A638ED7495F8D894F992983E6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D9947D34C618A164B7C73288BA8BB52DE8A4B2F4</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>S7_DMCToolbox_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>S7_DMCToolbox_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -77,6 +77,9 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip">
       <HintPath>.\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -227,6 +230,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="S7_DMCToolbox_1_TemporaryKey.pfx" />
     <None Include="S7_DMCToolbox_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
