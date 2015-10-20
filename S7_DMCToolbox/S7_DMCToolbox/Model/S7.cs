@@ -1045,6 +1045,9 @@ namespace S7_DMCToolbox
                             newRow.Input1 = "\"" + SelectedOPCServer + "." + CurrentBlock.Value.SymbolicName + "." + child.StructuredName + "\"";
                             newRow.BaseText = "\"" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";  // Message text 
                             newRow.DIG_MsgText = " ";   // Prevents 'Digital Alarm' text at the end of each message
+                            newRow.DIG_Limit = "1";     // Alarm state value needs to be 1 for a digital
+                            newRow.DIG_Severity = "500"; // Default severity is 500
+                            newRow.DIG_RequiresAck = "1"; // Require an acknowledge by default
                             exportTable.AddAlarmWorxExportTableRow(newRow);
                             break;
                         case S7DataRowType.UDT:
