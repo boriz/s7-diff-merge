@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\.build</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.targets"/>
+
+  <!-- Version Number -->
+  <PropertyGroup>
+    <Major>1</Major>
+    <Minor>0</Minor>
+    <Build>0</Build>
+    <!--Jenkins sets BUILD_NUMBER -->
+    <Revision>$(BUILD_NUMBER)</Revision>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>$(MSBuildProjectDirectory)\</OutputPath>
+  </PropertyGroup>
+
+  <Target Name="Version">
+    <Message Text="Version: $(Version)"/>
+    <AssemblyInfo CodeLanguage="CS" OutputFile="$(MSBuildProjectDirectory)\GlobalAssemblyInfo.cs" AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)" AssemblyConfiguration="$(Configuration)" Condition="$(Revision) != '' " />
+    <AssemblyInfo CodeLanguage="CS" OutputFile="$(MSBuildProjectDirectory)\GlobalAssemblyInfo.cs" AssemblyVersion="$(Major).$(Minor).*"                    AssemblyConfiguration="$(Configuration)" Condition="$(Revision) == '' " />
+  </Target>
+
+  <Target Name="AfterBuild">
+    <!-- List of files/directories to exclude in zip -->
+    <ItemGroup>
+      <SourceFilesExclude Include="*.zip" />
+      <SourceFilesExclude Include="\**\.svn\**" />
+    </ItemGroup>
+
+    <!-- Zip up archive -->
+    <ItemGroup>
+      <ZipSourceFiles Include="$(OutputPath)\**\*.*" Exclude="@(SourceFilesExclude)" />
+      <ZipFile Include="S7_DMCToolbox v$(Major).$(Minor).$(Build).$(Revision).zip"/>
+    </ItemGroup>
+    <Message Text="Zip: $(OutputPath)\*.*"/>
+    <Zip Files="@(ZipSourceFiles)" WorkingDirectory="$(OutputPath)\" ZipFileName="@(ZipFile)" ParallelCompression="false"/>
+
+    <!-- Copy archive to dmc-server -->
+    <Copy SourceFiles="@(ZipFile)" DestinationFolder="\\dmc-server\Projects\Active\DMC\S7_DMCToolbox\Builds" />
+  </Target>
+
+  <!-- Projects to Build -->
+  <ItemGroup>
+    <ProjectFiles Include="$(MSBuildProjectDirectory)\**\*.sln">
+      <Properties>Configuration=$(Configuration)</Properties>
+    </ProjectFiles>
+  </ItemGroup>
+
+  <Target Name="Compile" DependsOnTargets="Version">
+    <MSBuild Projects="@(ProjectFiles)" />
+  </Target>
+
+  <Target Name="Build">
+    <CallTarget Targets="Compile;AfterBuild" />
+  </Target>
+
+</Project>

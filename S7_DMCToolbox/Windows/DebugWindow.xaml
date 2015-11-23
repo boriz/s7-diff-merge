@@ -1,0 +1,12 @@
+<Window x:Class="S7_DMCToolbox.Windows.DebugWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControls="clr-namespace:DmcLib.Wpf.UserControls;assembly=DmcLib.Wpf"
+        Title="DebugWindow" 
+        WindowState="Maximized"
+        Height="300" 
+        Width="1000">
+    <Grid>
+        <userControls:EventLogDataGrid />
+    </Grid>
+</Window>

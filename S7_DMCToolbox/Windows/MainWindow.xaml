@@ -1,0 +1,74 @@
+<Window x:Class="S7_DMCToolbox.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:windows="clr-namespace:S7_DMCToolbox.Windows"
+        xmlns:screens="clr-namespace:S7_DMCToolbox.Screens"
+        xmlns:valueConverters1="clr-namespace:S7_DMCToolbox.ValueConverters"
+        xmlns:customControls="clr-namespace:S7_DMCToolbox.CustomControls"
+        Title="Application Title" 
+        Icon="/S7_DMCToolbox;component/DMC-Icon-White.ico"
+        Background="{StaticResource DmcColorLightGray}"
+        Height="768"
+        Width="1024">
+    <Window.DataContext>
+        <windows:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <valueConverters1:TypeToBoolConverter x:Key="TypeToBoolConverter" />
+        <valueConverters1:ViewModelToViewConverter x:Key="ViewModelToViewConverter" />
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="D" Modifiers="Control+Shift" Command="{Binding ToggleEventLogVisibiliyCommand}"/>
+    </Window.InputBindings>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" 
+                   Height="96"
+                   Background="Transparent">
+            <DockPanel.Resources>
+            </DockPanel.Resources>
+            <UniformGrid DockPanel.Dock="Right" Rows="1">
+                <UniformGrid.Resources>
+                    <Image Source="/S7_DMCToolbox;component/DMC Wheel Transparent Background.ico" x:Key="ButtonImage"/>
+                    <Style TargetType="customControls:HoverButton" BasedOn="{StaticResource {x:Type customControls:HoverButton}}">
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="HoverBackgroundBrush" Value="{StaticResource DmcColorGray}"/>
+                        <Setter Property="DisabledBackgroundBrush" Value="{StaticResource DmcColorGray}"/>
+                        <Setter Property="DisabledForegroundBrush" Value="White"/>
+                        <Setter Property="Width" Value="200"/>
+                        <Setter Property="Margin" Value="2 0 0 0"/>
+                    </Style>
+                </UniformGrid.Resources>
+                <customControls:HoverButton Content="Chart Screen" 
+                                            CommandParameter="{x:Type screens:ChartScreenViewModel}"
+                                            Command="{Binding NavigateToScreenCommand}"
+                                            IsEnabled="{Binding ActiveScreen, Converter={StaticResource TypeToBoolConverter}, ConverterParameter={x:Type screens:ChartScreenViewModel}}"/>
+                <customControls:HoverButton Content="Template Screen" 
+                                            CommandParameter="{x:Type screens:TemplateScreenViewModel}"
+                                            Command="{Binding NavigateToScreenCommand}"
+                                            IsEnabled="{Binding ActiveScreen, Converter={StaticResource TypeToBoolConverter}, ConverterParameter={x:Type screens:TemplateScreenViewModel}}"/>
+            </UniformGrid>
+            <Grid Background="White">
+                <Image HorizontalAlignment="Left" 
+                       Source="/Images/DMC-Logo.png" 
+                       Margin="20 0" 
+                       Height="48" />
+            </Grid>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom"
+                   Height="26"
+                   Background="{StaticResource DmcColorGray}">
+            <DockPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Margin" Value="5 0"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </DockPanel.Resources>
+            <TextBlock DockPanel.Dock="Left" Text="Status: "/>
+            <TextBlock DockPanel.Dock="Left" Text="{Binding Status}" />
+            <TextBlock DockPanel.Dock="Right" Text="{Binding AppVersion, StringFormat=Version: {0}}" />
+            <Grid/>
+        </DockPanel>
+        <ContentPresenter Content="{Binding ActiveScreen, Converter={StaticResource ViewModelToViewConverter}}" />
+    </DockPanel>
+</Window>

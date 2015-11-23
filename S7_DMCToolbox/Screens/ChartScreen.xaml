@@ -1,0 +1,20 @@
+<UserControl x:Class="S7_DMCToolbox.Screens.ChartScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:screens="clr-namespace:S7_DMCToolbox.Screens"
+             xmlns:chart="clr-namespace:DmcLib.Chart;assembly=DmcLib.Chart"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <screens:ChartScreenViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <chart:DmcChart TimeWindow="0:0:10">
+            <chart:DmcChart.Series>
+                <chart:DmcChartSeries Binding="{Binding Value}"/>
+            </chart:DmcChart.Series>
+        </chart:DmcChart>   
+    </Grid>
+</UserControl>

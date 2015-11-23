@@ -1,1 +1,0 @@
-AzCopy\AzCopy.exe S7_DMCToolbox\publish http://dmc.blob.core.windows.net/s7-toolbox-clickonce /destkey:<key> /S

@@ -1,3 +1,0 @@
-﻿Documentation to SZLs used by Siemens but not officialy Documented.
-
-The PDF Attached in this Folder describes some SZLs that are not in the newer Documents!
