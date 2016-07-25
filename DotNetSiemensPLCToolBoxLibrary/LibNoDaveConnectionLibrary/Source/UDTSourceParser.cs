@@ -69,7 +69,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                 if (trimmedLine.Contains(":"))
                 {
                     splitString = trimmedLine.Split(':');
-                    type = splitString[1].Trim().Trim(';').Trim('\"');
+                    type = splitString[1].Trim().Trim(';').Trim('\"').Trim();
                     name = splitString[0].Trim();
 
                     if (type.ToUpper().Contains("ARRAY"))
