@@ -86,6 +86,7 @@ namespace S7_DMCToolbox
         public string WinCCFlexDigitalAlarmsExportFilePath { get; set; }
         public string WinCCPortalDigitalAlarmsImportFilePath { get; set; }
         public string WinCCPortalDigitalAlarmsExportFilePath { get; set; }
+        public string KepwarePortalImportFilePath { get; set; }
         public string AllBlocksExportFilePath { get; set; }
 
         public Dictionary<String, Block> AllBlocks
@@ -259,7 +260,7 @@ namespace S7_DMCToolbox
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
             ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
 
-            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, CurrentBlock.Value);
+            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, blk);
             Dictionary<String, Tag> myTags = new Dictionary<string,Tag>();
             foreach (ExportTable.KepwareExportTableRow Row in exportTable)
             {
@@ -698,6 +699,11 @@ namespace S7_DMCToolbox
             DoJob(new ThreadStart(ExportKepwareAllBlocksAsync));
         }
 
+        internal void ExportKepwarePortal()
+        {
+            DoJob(new ThreadStart(ExportKepwarePortalAsync));
+        }
+
         internal void ExportKepwareAllBlocksAsync()
         {
 
@@ -721,7 +727,7 @@ namespace S7_DMCToolbox
                 }
                 ExportTable.KepwareExportTableDataTable singleBlockTable = new ExportTable.KepwareExportTableDataTable(); //create new CSV table
 
-                AddChildrenToKepwareExportTable(singleBlockTable, blk.Structure.Children, db.Value.SymbolicName, db.Value); //get addresses for all items in data block
+                AddChildrenToKepwareExportTable(singleBlockTable, blk.Structure.Children, db.Value.SymbolicName, db.Value.BlockContents); //get addresses for all items in data block
 
                 foreach (ExportTable.KepwareExportTableRow row in singleBlockTable.Rows) //add every row from this data block to our global table
                 {
@@ -757,7 +763,7 @@ namespace S7_DMCToolbox
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
             ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
 
-            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, CurrentBlock.Value);
+            AddChildrenToKepwareExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, blk);
             CreateKepwareCSVFromDataTable(exportTable);
 
             if (!Properties.Settings.Default.RecentlyUsedBlocks.Contains(CurrentBlock.Key))
@@ -770,6 +776,25 @@ namespace S7_DMCToolbox
                 Properties.Settings.Default.Save();
             }
             
+        }
+
+        internal void ExportKepwarePortalAsync()
+        {
+            if (!File.Exists(KepwareExportFilePath) || !File.Exists(KepwarePortalImportFilePath))
+            {
+                return;
+            }
+
+            ExportTable.KepwareExportTableDataTable exportTable = new ExportTable.KepwareExportTableDataTable();
+
+            var alarmDataBlocks = DbSourceParser.ParseDBSourceFile(KepwarePortalImportFilePath);
+            currentExportId = 0;
+            foreach (S7DataBlock dataBlock in alarmDataBlocks.Values)
+            {
+                AddChildrenToKepwareExportTable(exportTable, dataBlock.Structure.Children, dataBlock.Name, dataBlock);
+            }
+
+            CreateKepwareCSVFromDataTable(exportTable);
         }
 
         private void CreateKepwareCSVFromDataTable(ExportTable.KepwareExportTableDataTable exportTable)
@@ -789,7 +814,7 @@ namespace S7_DMCToolbox
             File.WriteAllText(KepwareExportFilePath, sb.ToString());
         }
 
-        private void AddChildrenToKepwareExportTable(ExportTable.KepwareExportTableDataTable exportTable, List<S7DataRow> Children, String ParentPath, Block blk, int ByteAdder = 0)
+        private void AddChildrenToKepwareExportTable(ExportTable.KepwareExportTableDataTable exportTable, List<S7DataRow> Children, String ParentPath, S7Block blk, int ByteAdder = 0)
         {
             foreach (S7DataRow child in Children)
             {
@@ -809,39 +834,39 @@ namespace S7_DMCToolbox
                     {
                         case S7DataRowType.BOOL:
                             newRow.Data_Type = "Boolean";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBX" + ByteAddress + "." + BitAddress;
+                            newRow.Address = "DB" + blk.BlockNumber + ".DBX" + ByteAddress + "." + BitAddress;
                             exportTable.AddKepwareExportTableRow(newRow);
                             break;
                         case S7DataRowType.BYTE:
                             newRow.Data_Type = "Byte";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBB" + ByteAddress;
+                            newRow.Address = "DB" + blk.BlockNumber + ".DBB" + ByteAddress;
                             exportTable.AddKepwareExportTableRow(newRow);
                             break;
                         case S7DataRowType.DINT:
                         case S7DataRowType.DWORD:
                         case S7DataRowType.TIME:
                             newRow.Data_Type = "DWord";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBD" + ByteAddress;
+                            newRow.Address = "DB" + blk.BlockNumber + ".DBD" + ByteAddress;
                             exportTable.AddKepwareExportTableRow(newRow);
                             break;
                         case S7DataRowType.WORD:
                             newRow.Data_Type = "Word";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBW" + ByteAddress;
+                            newRow.Address = "DB" + blk.BlockNumber + ".DBW" + ByteAddress;
                             exportTable.AddKepwareExportTableRow(newRow);
                             break;
                         case S7DataRowType.INT:
                             newRow.Data_Type = "Short";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBW" + ByteAddress;
+                            newRow.Address = "DB" + blk.BlockNumber + ".DBW" + ByteAddress;
                             exportTable.AddKepwareExportTableRow(newRow);
                             break;
                         case S7DataRowType.REAL:
                             newRow.Data_Type = "FLOAT";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBD" + ByteAddress;
+                            newRow.Address = "DB" + blk.BlockNumber + ".DBD" + ByteAddress;
                             exportTable.AddKepwareExportTableRow(newRow);
                             break;
                         case S7DataRowType.STRING:
                             newRow.Data_Type = "String";
-                            newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".String" + ByteAddress + "." + (child.ByteLength - 2);
+                            newRow.Address = "DB" + blk.BlockNumber + ".String" + ByteAddress + "." + (child.ByteLength - 2);
                             exportTable.AddKepwareExportTableRow(newRow);
 
                             break;
@@ -876,7 +901,7 @@ namespace S7_DMCToolbox
                         {
                             case S7DataRowType.BOOL:
                                 newRow.Data_Type = "Boolean";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBX" + ByteAddress + "." + BitAddress;
+                                newRow.Address = "DB" + blk.BlockNumber + ".DBX" + ByteAddress + "." + BitAddress;
                                 exportTable.AddKepwareExportTableRow(newRow);
                                 ArrayBitAdder++;
                                 if (ArrayBitAdder == 8)
@@ -887,34 +912,34 @@ namespace S7_DMCToolbox
                                 break;
                             case S7DataRowType.BYTE:
                                 newRow.Data_Type = "Byte";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBB" + ByteAddress;
+                                newRow.Address = "DB" + blk.BlockNumber + ".DBB" + ByteAddress;
                                 exportTable.AddKepwareExportTableRow(newRow);
                                 break;
                             case S7DataRowType.DINT:
                             case S7DataRowType.DWORD:
                             case S7DataRowType.TIME:
                                 newRow.Data_Type = "DWord";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBD" + ByteAddress;
+                                newRow.Address = "DB" + blk.BlockNumber + ".DBD" + ByteAddress;
                                 exportTable.AddKepwareExportTableRow(newRow);
                                 break;
                             case S7DataRowType.WORD:
                                 newRow.Data_Type = "Word";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBW" + ByteAddress;
+                                newRow.Address = "DB" + blk.BlockNumber + ".DBW" + ByteAddress;
                                 exportTable.AddKepwareExportTableRow(newRow);
                                 break;
                             case S7DataRowType.INT:
                                 newRow.Data_Type = "Short";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBW" + ByteAddress;
+                                newRow.Address = "DB" + blk.BlockNumber + ".DBW" + ByteAddress;
                                 exportTable.AddKepwareExportTableRow(newRow);
                                 break;
                             case S7DataRowType.REAL:
                                 newRow.Data_Type = "FLOAT";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".DBD" + ByteAddress;
+                                newRow.Address = "DB" + blk.BlockNumber + ".DBD" + ByteAddress;
                                 exportTable.AddKepwareExportTableRow(newRow);
                                 break;
                             case S7DataRowType.STRING:
                                 newRow.Data_Type = "String";
-                                newRow.Address = "DB" + blk.BlockContents.BlockNumber + ".String" + ByteAddress + "." + (child.ByteLength - 2);
+                                newRow.Address = "DB" + blk.BlockNumber + ".String" + ByteAddress + "." + (child.ByteLength - 2);
                                 exportTable.AddKepwareExportTableRow(newRow);
 
                                 break;

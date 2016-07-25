@@ -506,6 +506,14 @@ namespace S7_DMCToolbox
             }
         }
 
+        public ICommand ExportKepwarePortalCmd
+        {
+            get
+            {
+                return new RelayCommand(p => this.ExportKepwarePortal(), z => !S7Model.IsBusy);
+            }
+        }
+
         public ICommand ExportAllBlocksCmd
         {
             get
@@ -596,6 +604,37 @@ namespace S7_DMCToolbox
         private void ExportWinCCProfessional()
         {
             ExportWinCCPortalDigitalAlarms(false);
+        }
+
+        private void ExportKepwarePortal()
+        {
+            VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
+            VistaOpenFileDialog openFileDialog = new VistaOpenFileDialog();
+
+            openFileDialog.Title = "Select DB Text File Location";
+            openFileDialog.AddExtension = true;
+            openFileDialog.DefaultExt = ".db";
+            openFileDialog.Filter = "DB File|*.db";
+            if (Directory.Exists(S7Model.WinCCPortalDigitalAlarmsImportFilePath))
+                openFileDialog.InitialDirectory = Properties.Settings.Default.WinCCPortalDigitalAlarmsImportFilePath;
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                S7Model.KepwarePortalImportFilePath = openFileDialog.FileName;
+            }
+
+            selectFileDialog.Title = "Select Export Location";
+            selectFileDialog.AddExtension = true;
+            selectFileDialog.DefaultExt = ".csv";
+            selectFileDialog.Filter = "CSV File|*.csv";
+            if (Directory.Exists(S7Model.WinCCPortalDigitalAlarmsExportFilePath))
+                selectFileDialog.InitialDirectory = Properties.Settings.Default.WinCCPortalDigitalAlarmsExportFilePath;
+
+            if ((bool)selectFileDialog.ShowDialog())
+            {
+                S7Model.KepwareExportFilePath = selectFileDialog.FileName;
+                S7Model.ExportKepwarePortal();
+            }
         }
 
         private void ExportWinCCPortalDigitalAlarms(bool comfortSelected)

@@ -128,7 +128,6 @@
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\ExportTable.cs">
       <DependentUpon>ExportTable.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Model\ExportTable.Designer.cs">
       <AutoGen>True</AutoGen>

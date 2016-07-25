@@ -117,6 +117,7 @@
                                         <TextBlock Text="Alarms" HorizontalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
+                                <Button DockPanel.Dock="Right" Command="{Binding ExportKepwarePortalCmd}" Width="75" Margin="5" Content="Kepware" />
                                 <Viewbox DockPanel.Dock="Left" Height="35" Width="35" >
                                     <DMC.UI:ProgressWheel Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="5">
                                         <!--<DMC.UI:ProgressWheel.RenderTransform>
