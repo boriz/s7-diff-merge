@@ -45,7 +45,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
             newRow.Comment = structComment;
             bool finished = false;
 
-            while (inputText.Count > 0)
+            while (inputText.Count > 0 && !finished)
             {
                 String line = inputText[0];
                 inputText.RemoveAt(0);
@@ -84,7 +84,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                         splitString = type.Split(new string[] { "of" }, StringSplitOptions.RemoveEmptyEntries);
                         if (splitString.Length > 1)
                         {
-                            arrayType = splitString[1].Trim();
+                            arrayType = splitString[1].Trim().Trim('\"');
                         }
 
                         type = "ARRAY";
@@ -221,7 +221,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
 
             foreach (String line in fileContents)
             {
-                if (line.ToUpper().Contains("TYPE"))
+                if (line.Contains("TYPE"))
                 {
                     split = line.Split(' ');
                     if (split.Length > 1)
@@ -241,7 +241,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
 
                 if (startReading)
                 {
-                    if (line.ToUpper().Contains("END_TYPE"))
+                    if (line.Contains("END_TYPE"))
                     {
                         blockContents = blockContents.Where(s => !String.IsNullOrWhiteSpace(s)).ToList();
                         currentBlock.StructureFromString = ParseChildrenRowsFromText(blockContents, currentBlock.Name, "", currentBlock);
@@ -250,6 +250,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                         if (!returnBlocks.ContainsKey(currentBlock.Name))
                         {
                             returnBlocks.Add(currentBlock.Name, currentBlock);
+                            UdtReferenceBlocks.Add(currentBlock.Name, currentBlock);
                         }
                         
                         currentBlock = new S7DataBlock();
@@ -264,7 +265,7 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                 }
                 else
                 {
-                    if (line.ToUpper().Contains("STRUCT"))
+                    if (line.Contains("STRUCT"))
                     {
                         startReading = true;
                     }

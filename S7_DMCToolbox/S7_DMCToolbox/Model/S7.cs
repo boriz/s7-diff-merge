@@ -780,7 +780,7 @@ namespace S7_DMCToolbox
 
         internal void ExportKepwarePortalAsync()
         {
-            if (!File.Exists(KepwareExportFilePath) || !File.Exists(KepwarePortalImportFilePath))
+            if (!File.Exists(KepwarePortalImportFilePath))
             {
                 return;
             }

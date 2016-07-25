@@ -51,6 +51,13 @@ namespace DotNetSiemensPLCToolBoxLibrary.Source
                     if (split.Length > 1)
                     {
                         currentBlock.Name = split[1].Trim('\"');
+
+                        if (split.Length > 2)
+                        {
+                            int number = 0;
+                            Int32.TryParse(split[2].Trim('\"'), out number);
+                            currentBlock.BlockNumber = number;
+                        }
                     }
                 }
 
