@@ -792,7 +792,7 @@ namespace S7_DMCToolbox
             if (Directory.Exists(S7Model.ProjectPath))
                 selectFileDialog.InitialDirectory = Properties.Settings.Default.ProjectPath;
             
-            selectFileDialog.Filter = "S7 Projects(*.zip, *.s7p, *.s7l)|*.s7p;*.s7l;*.zip";
+            selectFileDialog.Filter = "S7 Projects(*.zip, *.s7p, *.s7l, *.ap13)|*.s7p;*.s7l;*.zip;*.ap13";
             if ((bool)selectFileDialog.ShowDialog())// == DialogResult.OK)
             {
                 ProjectPath = selectFileDialog.FileName;
