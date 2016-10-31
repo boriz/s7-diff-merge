@@ -463,9 +463,20 @@ namespace S7_DMCToolbox
         {
             get
             {
-                return new RelayCommand(p => ExportAlarmWorx(), z => !S7Model.IsBusy);
+                return new RelayCommand(p =>
+                {
+                    if (this.portalPlatformSelected)
+                    {
+                        this.ExportAlarmWorxPortal();
+                    }
+                    else
+                    {
+                        this.ExportAlarmWorx();
+                    }
+                }, z => !S7Model.IsBusy);
             }
         }
+
         public ICommand ExportKepwareCmd
         {
             get
@@ -740,6 +751,36 @@ namespace S7_DMCToolbox
                 Properties.Settings.Default.AlarmWorxExportFilePath = selectFileDialog.FileName;
                 Properties.Settings.Default.Save();
                 S7Model.ExportAlarmWorx();
+            }
+            
+        }
+
+        private void ExportAlarmWorxPortal()
+        {
+            VistaSaveFileDialog selectFileDialog = new VistaSaveFileDialog();
+            VistaOpenFileDialog openFileDialog = new VistaOpenFileDialog();
+
+            openFileDialog.Title = "Select DB Text File Location";
+            openFileDialog.AddExtension = true;
+            openFileDialog.DefaultExt = ".db";
+            openFileDialog.Filter = "DB File|*.db";
+            if (Directory.Exists(S7Model.WinCCPortalDigitalAlarmsImportFilePath))
+                openFileDialog.InitialDirectory = Properties.Settings.Default.WinCCPortalDigitalAlarmsImportFilePath;
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                selectFileDialog.Title = "Select Export Location";
+                selectFileDialog.AddExtension = true;
+                selectFileDialog.DefaultExt = ".csv";
+                selectFileDialog.Filter = "CSV File|*.csv";
+                if (Directory.Exists(S7Model.WinCCPortalDigitalAlarmsExportFilePath))
+                    selectFileDialog.InitialDirectory = Properties.Settings.Default.WinCCPortalDigitalAlarmsExportFilePath;
+
+                if ((bool)selectFileDialog.ShowDialog())
+                {
+                    S7Model.ExportAlarmWorxPortal(openFileDialog.FileName, selectFileDialog.FileName);
+                }
+
             }
             
         }

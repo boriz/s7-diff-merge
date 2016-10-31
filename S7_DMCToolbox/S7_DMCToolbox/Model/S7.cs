@@ -999,6 +999,11 @@ namespace S7_DMCToolbox
             }
             
         }
+
+        #endregion
+
+        #region Export AlarmWorX
+
         internal void ExportAlarmWorx()
         {
             if (!Properties.Settings.Default.RecentOPCServers.Contains(SelectedOPCServer))
@@ -1032,11 +1037,36 @@ namespace S7_DMCToolbox
             S7DataBlock blk = (S7DataBlock)CurrentBlock.Value.BlockContents;
             ExportTable.AlarmWorxExportTableDataTable exportTable = new ExportTable.AlarmWorxExportTableDataTable();
 
-            AddChildrenToAlarmworxExportTable(exportTable, blk.Structure.Children, "");
-            CreateAlarmWorxCSVFromDataTable(exportTable);
+            AddChildrenToAlarmworxExportTable(exportTable, blk.Structure.Children, CurrentBlock.Value.SymbolicName, "");
+            File.WriteAllText(AlarmWorxExportFilePath, CreateAlarmWorxCSVFromDataTable(exportTable).ToString());
         }
 
-        private void CreateAlarmWorxCSVFromDataTable(ExportTable.AlarmWorxExportTableDataTable exportTable)
+        internal void ExportAlarmWorxPortal(string importFilePath, string exportFilePath)
+        {
+            if (!Properties.Settings.Default.RecentOPCServers.Contains(SelectedOPCServer))
+            {
+                Properties.Settings.Default.RecentOPCServers.Insert(0, SelectedOPCServer);
+                while (Properties.Settings.Default.RecentOPCServers.Count > 15)
+                {
+                    Properties.Settings.Default.RecentOPCServers.RemoveAt(15);
+                }
+            }
+
+            Properties.Settings.Default.Save();
+
+            ExportTable.AlarmWorxExportTableDataTable exportTable = new ExportTable.AlarmWorxExportTableDataTable();
+
+            var alarmDataBlocks = DbSourceParser.ParseDBSourceFile(importFilePath);
+            currentExportId = 0;
+            foreach (S7DataBlock dataBlock in alarmDataBlocks.Values)
+            {
+                AddChildrenToAlarmworxExportTable(exportTable, dataBlock.Structure.Children, dataBlock.Name, "");
+            }
+            
+            File.WriteAllText(exportFilePath, CreateAlarmWorxCSVFromDataTable(exportTable).ToString());
+        }
+
+        private StringBuilder CreateAlarmWorxCSVFromDataTable(ExportTable.AlarmWorxExportTableDataTable exportTable)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(@"#AWX_Source;");
@@ -1049,11 +1079,10 @@ namespace S7_DMCToolbox
                 IEnumerable<string> fields = row.ItemArray.Select(field => field.ToString());
                 sb.AppendLine(string.Join(",", fields));
             }
-
-            File.WriteAllText(AlarmWorxExportFilePath, sb.ToString());
+            return sb;
         }
 
-        private void AddChildrenToAlarmworxExportTable(ExportTable.AlarmWorxExportTableDataTable exportTable, List<S7DataRow> Children, string strCommentPath)
+        private void AddChildrenToAlarmworxExportTable(ExportTable.AlarmWorxExportTableDataTable exportTable, List<S7DataRow> Children, string blockName, string strCommentPath)
         {
             foreach (S7DataRow child in Children)
             {
@@ -1067,7 +1096,7 @@ namespace S7_DMCToolbox
                             newRow.Name = "\"" +  SelectedAlarmFolder + "." + child.StructuredName + "\"";
                             newRow.Description = "\"" + child.Comment + "\"";
                             newRow.LastModified = DateTime.Now;
-                            newRow.Input1 = "\"" + SelectedOPCServer + "." + CurrentBlock.Value.SymbolicName + "." + child.StructuredName + "\"";
+                            newRow.Input1 = "\"" + SelectedOPCServer + "." + blockName + "." + child.StructuredName + "\"";
                             newRow.BaseText = "\"" + strCommentPath.Trim() + " " + child.Comment.Trim() + "\"";  // Message text 
                             newRow.DIG_MsgText = " ";   // Prevents 'Digital Alarm' text at the end of each message
                             newRow.DIG_Limit = "1";     // Alarm state value needs to be 1 for a digital
@@ -1078,7 +1107,7 @@ namespace S7_DMCToolbox
                         case S7DataRowType.UDT:
                         case S7DataRowType.STRUCT:
                             // Build comments path string, separate each level by the space
-                            AddChildrenToAlarmworxExportTable(exportTable, child.Children, strCommentPath.Trim() + " " + child.Comment.Trim());
+                            AddChildrenToAlarmworxExportTable(exportTable, child.Children, blockName, strCommentPath.Trim() + " " + child.Comment.Trim());
                             break;
                         default:
                             break;

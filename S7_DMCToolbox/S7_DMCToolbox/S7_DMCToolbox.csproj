@@ -65,16 +65,22 @@
     <ApplicationIcon>DMC Siemens Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D9947D34C618A164B7C73288BA8BB52DE8A4B2F4</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DBB1A7B102DF8FF5012ABD168D06CCAC119A038A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>S7_DMCToolbox_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>S7_DMCToolbox_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus">
@@ -224,12 +230,14 @@
       <DependentUpon>ExportTable.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="S7_DMCToolbox_1_TemporaryKey.pfx" />
+    <None Include="S7_DMCToolbox_2_TemporaryKey.pfx" />
     <None Include="S7_DMCToolbox_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
